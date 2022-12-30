@@ -3,3 +3,4 @@
 - import_playbook: 'unbound/unbound.yaml'
 - import_playbook: 'letsencrypt/letsencrypt.yaml'
 - import_playbook: 'apache/apache.yaml'
+- import_playbook: 'gastrak/gastrak.yaml'
