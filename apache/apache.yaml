@@ -45,6 +45,11 @@
         src: 'index.html.j2'
         dest: '/var/www/html/index.html'
 
+    - name: 'create letsencrypt.conf'
+      ansible.builtin.template:
+        src: 'letsencrypt.conf.j2'
+        dest: '/etc/apache2/letsencrypt.conf'
+
     - name: 'create site configs'
       loop: '{{ sites + sites_disabled }}'
       ansible.builtin.template:

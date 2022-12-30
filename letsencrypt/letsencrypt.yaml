@@ -63,7 +63,7 @@
           --email {{ letsencrypt_email }}
           --dns-cloudflare
           --dns-cloudflare-credentials /root/.secrets/certbot/cloudflare.ini
-          --domains *.{{ fqdn }}
+          --domains *.{{ fqdn }},{{ fqdn }}
           --dry-run  # TODO
 
     - name: 'enable certbot renew timer'
