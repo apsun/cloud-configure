@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euo pipefail
 
-. env
+. ./env
 
 terraform init -upgrade
 terraform destroy -auto-approve \
