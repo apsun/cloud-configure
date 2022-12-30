@@ -1,0 +1,5 @@
+- import_playbook: 'packages/packages.yaml'
+- import_playbook: 'wireguard/wireguard.yaml'
+- import_playbook: 'unbound/unbound.yaml'
+- import_playbook: 'letsencrypt/letsencrypt.yaml'
+- import_playbook: 'apache/apache.yaml'

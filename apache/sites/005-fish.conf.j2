@@ -1,0 +1,11 @@
+<VirtualHost *:443>
+        ServerName fish.{{ fqdn }}
+
+        ProxyPreserveHost On
+        ProxyPass "/" "http://127.0.0.1:8264/"
+        ProxyPassReverse "/" "http://127.0.0.1:8264/"
+
+        SSLCertificateFile /etc/letsencrypt/live/{{ fqdn }}/fullchain.pem
+        SSLCertificateKeyFile /etc/letsencrypt/live/{{ fqdn }}/privkey.pem
+        Include /etc/letsencrypt/options-ssl-apache.conf
+</VirtualHost>

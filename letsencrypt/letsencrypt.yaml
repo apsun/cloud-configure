@@ -1,0 +1,73 @@
+- name: 'configure letsencrypt'
+  hosts: all
+  become: true
+  vars:
+    hostname: '{{ ansible_hostname }}'
+    fqdn: '{{ hostname }}.{{ domain_name }}'
+    public_ip: '{{ inventory_hostname }}'
+    cloudflare_api_token: '{{ lookup("ansible.builtin.pipe", "pass cloudflare.com/certbot") }}'
+    letsencrypt_email: 'letsencrypt@{{ domain_name }}'
+
+  tasks:
+    - name: 'install packages'
+      ansible.builtin.apt:
+        name:
+          - 'certbot'
+          - 'python3-certbot-dns-cloudflare'
+
+    - name: 'create certbot secrets directory'
+      ansible.builtin.file:
+        path: '/root/.secrets/certbot'
+        state: directory
+        mode: '0700'
+
+    - name: 'write cloudflare API token'
+      ansible.builtin.template:
+        src: 'cloudflare.ini.j2'
+        dest: '/root/.secrets/certbot/cloudflare.ini'
+        mode: '0600'
+
+    - name: 'create A record'
+      community.general.cloudflare_dns:
+        api_token: '{{ cloudflare_api_token }}'
+        zone: '{{ domain_name }}'
+        type: 'A'
+        record: '{{ hostname }}'
+        value: '{{ public_ip }}'
+
+    - name: 'create CNAME record'
+      community.general.cloudflare_dns:
+        api_token: '{{ cloudflare_api_token }}'
+        zone: '{{ domain_name }}'
+        type: 'CNAME'
+        record: '*.{{ hostname }}'
+        value: '{{ fqdn }}'
+
+    - name: 'check if cert already exists'
+      register: letsencrypt_initialized
+      ansible.builtin.stat:
+        path: '/etc/letsencrypt/renewal/{{ fqdn }}.conf'
+
+    - name: 'wait for DNS record propagation'
+      when: not letsencrypt_initialized.stat.exists
+      ansible.builtin.pause:
+        seconds: 30
+
+    - name: 'request new cert'
+      when: not letsencrypt_initialized.stat.exists
+      ansible.builtin.shell:
+        cmd: >-
+          certbot certonly
+          --non-interactive
+          --agree-tos
+          --email {{ letsencrypt_email }}
+          --dns-cloudflare
+          --dns-cloudflare-credentials /root/.secrets/certbot/cloudflare.ini
+          --domains *.{{ fqdn }}
+          --dry-run  # TODO
+
+    - name: 'enable certbot renew timer'
+      ansible.builtin.systemd:
+        name: 'certbot.timer'
+        state: started
+        enabled: true

@@ -1,0 +1,16 @@
+<VirtualHost *:443>
+        ServerName send.{{ fqdn }}
+
+        ProxyPreserveHost On
+        ProxyPass "/" "http://127.0.0.1:1443/"
+        ProxyPassReverse "/" "http://127.0.0.1:1443/"
+
+        RewriteEngine on
+        RewriteCond %{HTTP:Upgrade} websocket [NC]
+        RewriteCond %{HTTP:Connection} upgrade [NC]
+        RewriteRule /(.*) ws://127.0.0.1:1443/$1 [P,L]
+
+        SSLCertificateFile /etc/letsencrypt/live/{{ fqdn }}/fullchain.pem
+        SSLCertificateKeyFile /etc/letsencrypt/live/{{ fqdn }}/privkey.pem
+        Include /etc/letsencrypt/options-ssl-apache.conf
+</VirtualHost>

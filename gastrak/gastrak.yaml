@@ -1,0 +1,68 @@
+- name: 'configure gastrak'
+  hosts: all
+  become: true
+  tasks:
+    - name: 'install dependencies'
+      ansible.builtin.apt:
+        name:
+          - 'git'
+          - 'golang'
+          - 'acl'  # needed for become_user
+        state: present
+        update_cache: true
+
+    - name: 'create gastrak group'
+      ansible.builtin.group:
+        name: 'gastrak'
+
+    - name: 'create gastrak user'
+      ansible.builtin.user:
+        name: 'gastrak'
+        group: 'gastrak'
+
+    - name: 'clone git repo'
+      become_user: 'gastrak'
+      ansible.builtin.git:
+        repo: 'https://github.com/apsun/gastrak.git'
+        dest: '/home/gastrak/gastrak'
+
+    - name: 'check if already initialized'
+      become_user: 'gastrak'
+      register: gastrak_initialized
+      ansible.builtin.stat:
+        path: '/home/gastrak/gastrak/data/current.csv'
+
+    - name: 'initialize data'
+      become_user: 'gastrak'
+      when: not gastrak_initialized.stat.exists
+      ansible.builtin.command:
+        cmd: '/home/gastrak/gastrak/data/run-gastrak.sh'
+
+    - name: 'create server systemd service'
+      ansible.builtin.copy:
+        src: 'gastrak.service'
+        dest: '/etc/systemd/system/gastrak.service'
+
+    - name: 'enable server systemd service'
+      ansible.builtin.systemd:
+        name: 'gastrak'
+        state: started
+        enabled: true
+        daemon_reload: true
+
+    - name: 'create refresh systemd service'
+      ansible.builtin.copy:
+        src: 'gastrak-refresh.service'
+        dest: '/etc/systemd/system/gastrak-refresh.service'
+
+    - name: 'create refresh systemd timer'
+      ansible.builtin.copy:
+        src: 'gastrak-refresh.timer'
+        dest: '/etc/systemd/system/gastrak-refresh.timer'
+
+    - name: 'enable refresh systemd timer'
+      ansible.builtin.systemd:
+        name: 'gastrak-refresh.timer'
+        state: started
+        enabled: true
+        daemon_reload: true

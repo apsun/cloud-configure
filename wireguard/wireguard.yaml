@@ -1,0 +1,59 @@
+- name: 'configure wireguard'
+  hosts: all
+  become: true
+  vars:
+    server: 'minori'
+    clients:
+      - 'rin'
+      - 'sachi'
+      - 'kotone'
+      - 'nonoka'
+      - 'dad'
+      - 'komachi'
+      - 'pixel6a'
+  tasks:
+    - name: 'install packages'
+      ansible.builtin.apt:
+        name:
+          - 'wireguard'
+        state: present
+        update_cache: true
+
+    - name: 'enable IPv4 forwarding'
+      ansible.posix.sysctl:
+        name: 'net.ipv4.ip_forward'
+        value: '1'
+
+    - name: 'enable IPv6 forwarding'
+      ansible.posix.sysctl:
+        name: 'net.ipv6.conf.all.forwarding'
+        value: '1'
+
+    - name: 'use bbr congestion control'
+      ansible.posix.sysctl:
+        name: 'net.ipv4.tcp_congestion_control'
+        value: 'bbr'
+
+    - name: 'use fq qdisc'
+      ansible.posix.sysctl:
+        name: 'net.core.default_qdisc'
+        value: 'fq'  # TODO: fq_codel?
+
+    - name: 'create wg0 config'
+      notify: 'restart wireguard service'
+      ansible.builtin.template:
+        src: 'wg0.conf.j2'
+        dest: '/etc/wireguard/wg0.conf'
+        mode: '0600'
+
+    - name: 'enable wireguard service'
+      ansible.builtin.systemd:
+        name: 'wg-quick@wg0'
+        state: started
+        enabled: true
+
+  handlers:
+    - name: 'restart wireguard service'
+      ansible.builtin.systemd:
+        name: 'wg-quick@wg0'
+        state: restarted

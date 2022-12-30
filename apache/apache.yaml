@@ -1,0 +1,82 @@
+- name: 'configure apache'
+  hosts: all
+  become: true
+  vars:
+    hostname: '{{ ansible_hostname }}'
+    fqdn: '{{ hostname }}.{{ domain_name }}'
+
+    modules:
+      - 'proxy'
+      - 'proxy_http'
+      - 'proxy_wstunnel'
+      - 'rewrite'
+      - 'ssl'
+
+    sites:
+      - '000-default'
+      - '001-index'
+      - '003-clips'
+      - '004-gastrak'
+      - '005-fish'
+      - '006-nitter'
+      - '007-invidious'
+
+    sites_disabled:
+      - '002-send'
+
+  tasks:
+    - name: 'install packages'
+      ansible.builtin.apt:
+        name:
+          - 'apache2'
+        update_cache: true
+
+    - name: 'enable modules'
+      loop: '{{ modules }}'
+      register: mod_result
+      failed_when: mod_result.rc != 0 and mod_result.rc != 42
+      changed_when: mod_result.rc == 0
+      notify: 'restart apache service'
+      ansible.builtin.shell:
+        cmd: 'a2query -q -m {{ item }} && exit 42 || a2enmod {{ item }}'
+
+    - name: 'create index.html'
+      ansible.builtin.template:
+        src: 'index.html.j2'
+        dest: '/var/www/html/index.html'
+
+    - name: 'create site configs'
+      loop: '{{ sites + sites_disabled }}'
+      ansible.builtin.template:
+        src: 'sites/{{ item }}.conf.j2'
+        dest: '/etc/apache2/sites-available/{{ item }}.conf'
+
+    - name: 'disable old site configs'
+      loop: '{{ sites_disabled }}'
+      register: disable_result
+      failed_when: disable_result.rc != 0 and disable_result.rc != 42
+      changed_when: disable_result.rc == 0
+      notify: 'restart apache service'
+      ansible.builtin.shell:
+        cmd: 'a2query -q -s {{ item }} || exit 42 && a2dissite {{ item }}'
+
+    - name: 'enable site configs'
+      loop: '{{ sites }}'
+      register: site_result
+      failed_when: site_result.rc != 0 and site_result.rc != 42
+      changed_when: site_result.rc == 0
+      notify: 'restart apache service'
+      ansible.builtin.shell:
+        cmd: 'a2query -q -s {{ item }} && exit 42 || a2ensite {{ item }}'
+
+    - name: 'enable apache service'
+      ansible.builtin.systemd:
+        name: 'apache2'
+        state: started
+        enabled: true
+
+  handlers:
+    - name: 'restart apache service'
+      ansible.builtin.systemd:
+        name: 'apache2'
+        state: restarted

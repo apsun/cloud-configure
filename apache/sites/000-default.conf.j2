@@ -1,0 +1,16 @@
+# redirect all subdomains to https
+<VirtualHost *:80>
+        ServerName {{ fqdn }}
+        ServerAlias *.{{ fqdn }}
+        <Location "/">
+                Redirect permanent https://%{HTTP_HOST}%{REQUEST_URI}
+        </Location>
+</VirtualHost>
+
+# 404 for unknown subdomains
+<VirtualHost *:443>
+        Redirect 404 /
+        SSLCertificateFile /etc/letsencrypt/live/{{ fqdn }}/fullchain.pem 
+        SSLCertificateKeyFile /etc/letsencrypt/live/{{ fqdn }}/privkey.pem 
+        Include /etc/letsencrypt/options-ssl-apache.conf 
+</VirtualHost>

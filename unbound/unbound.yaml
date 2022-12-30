@@ -1,0 +1,28 @@
+- name: 'configure unbound'
+  hosts: all
+  become: true
+  tasks:
+    - name: 'install packages'
+      ansible.builtin.apt:
+        name:
+          - 'unbound'
+        state: present
+        update_cache: true
+
+    - name: 'create server config'
+      notify: 'restart unbound service'
+      ansible.builtin.copy:
+        src: 'server.conf'
+        dest: '/etc/unbound/unbound.conf.d/server.conf'
+
+    - name: 'enable unbound service'
+      ansible.builtin.systemd:
+        name: 'unbound'
+        state: started
+        enabled: true
+
+  handlers:
+    - name: 'restart unbound service'
+      ansible.builtin.systemd:
+        name: 'unbound'
+        state: restarted
