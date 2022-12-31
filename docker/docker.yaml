@@ -2,6 +2,12 @@
   hosts: all
   become: true
   tasks:
+    - name: 'install gpg'
+      ansible.builtin.apt:
+        name:
+          - 'gpg'
+        state: present
+
     - name: 'add gpg key'
       ansible.builtin.apt_key:
         url: 'https://download.docker.com/linux/debian/gpg'
