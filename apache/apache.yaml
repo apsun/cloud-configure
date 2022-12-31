@@ -20,10 +20,10 @@
       - '004-gastrak'
       - '005-fish'
       - '006-nitter'
-      - '007-invidious'
 
     sites_disabled:
       - '002-send'
+      - '007-invidious'
 
   tasks:
     - name: 'install packages'
