@@ -20,10 +20,9 @@ provider "aws" {
   profile = "terraform"
 }
 
-/*
 resource "aws_instance" "node" {
-  ami                         = "ami-0b8db56f1634f78b5"
-  instance_type               = "t3.small"
+  ami                         = "ami-0208c4ce9b9b6b33c"
+  instance_type               = "t4g.small"
   key_name                    = var.ssh_key_name
   user_data_replace_on_change = true
   tags = {
@@ -34,8 +33,8 @@ resource "aws_instance" "node" {
 output "node_public_ip" {
   value = aws_instance.node.public_ip
 }
-*/
 
+/*
 resource "aws_lightsail_instance" "node" {
   name              = var.hostname
   availability_zone = "us-west-2a"
@@ -57,3 +56,4 @@ resource "aws_lightsail_instance_public_ports" "node" {
 output "node_public_ip" {
   value = aws_lightsail_instance.node.public_ip_address
 }
+*/
