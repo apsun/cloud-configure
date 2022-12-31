@@ -45,12 +45,14 @@
         dest: '/var/www/html/index.html'
 
     - name: 'create letsencrypt.conf'
+      notify: 'restart apache service'
       ansible.builtin.template:
         src: 'letsencrypt.conf.j2'
         dest: '/etc/apache2/letsencrypt.conf'
 
     - name: 'create site configs'
       loop: '{{ sites + sites_disabled }}'
+      notify: 'restart apache service'
       ansible.builtin.template:
         src: 'sites/{{ item }}.conf.j2'
         dest: '/etc/apache2/sites-available/{{ item }}.conf'
