@@ -52,7 +52,7 @@
         daemon_reload: true
 
     - name: 'create gastrak-refresh service'
-    - name: 'restart gastrak-refresh timer'
+      notify: 'restart gastrak-refresh timer'
       ansible.builtin.copy:
         src: 'gastrak-refresh.service'
         dest: '/etc/systemd/system/gastrak-refresh.service'
