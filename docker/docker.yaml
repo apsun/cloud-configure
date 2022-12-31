@@ -1,0 +1,24 @@
+- name: 'configure docker'
+  hosts: all
+  become: true
+  tasks:
+    - name: 'add gpg key'
+      ansible.builtin.apt_key:
+        url: 'https://download.docker.com/linux/debian/gpg'
+
+    - name: 'add repo'
+      ansible.builtin.apt_repository:
+        repo: 'deb https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable'
+
+    - name: 'install package'
+      ansible.builtin.apt:
+        name:
+          - 'docker-ce'
+        state: present
+        update_cache: true
+
+    - name: 'enable docker service'
+      ansible.builtin.systemd:
+        name: 'docker'
+        state: started
+        enabled: true
