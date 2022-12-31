@@ -39,7 +39,7 @@
     - name: 'clone git repo'
       become_user: 'nitter'
       ansible.builtin.git:
-        repo: 'https://github.com/apsun/nitter.git'
+        repo: 'https://github.com/zedeus/nitter.git'
         dest: '/home/nitter/nitter'
 
     - name: 'check if need rebuild'
