@@ -1,0 +1,17 @@
+[Unit]
+Description=nitter
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=nitter
+Group=nitter
+WorkingDirectory=/home/nitter/nitter
+ExecStart=/home/nitter/nitter/nitter
+#ExecStart=docker run -v /home/nitter/nitter.conf:/src/nitter.conf -d --network host zedeus/nitter:latest
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target

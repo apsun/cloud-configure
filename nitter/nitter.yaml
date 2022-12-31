@@ -1,0 +1,94 @@
+- name: 'configure nitter'
+  hosts: all
+  become: true
+  vars:
+    hostname: '{{ ansible_hostname }}'
+    fqdn: '{{ hostname }}.{{ domain_name }}'
+
+  tasks:
+    - name: 'install dependencies'
+      ansible.builtin.apt:
+        name:
+          - 'git'
+          - 'redis-server'
+          - 'libsass-dev'
+          - 'acl'  # needed for become_user
+        state: present
+        update_cache: true
+
+    - name: 'add backports repo'
+      ansible.builtin.apt_repository:
+        repo: 'deb http://deb.debian.org/debian {{ ansible_distribution_release }}-backports main'
+
+    - name: 'install nim'
+      ansible.builtin.apt:
+        name:
+          - 'nim'
+        state: latest
+        default_release: '{{ ansible_distribution_release }}-backports'
+
+    - name: 'create nitter group'
+      ansible.builtin.group:
+        name: 'nitter'
+
+    - name: 'create nitter user'
+      ansible.builtin.user:
+        name: 'nitter'
+        group: 'nitter'
+
+    - name: 'clone git repo'
+      become_user: 'nitter'
+      ansible.builtin.git:
+        repo: 'https://github.com/zedeus/nitter.git'
+        dest: '/home/nitter/nitter'
+
+    - name: 'check if need rebuild'
+      become_user: 'nitter'
+      register: nitter_need_rebuild
+      failed_when: false
+      ansible.builtin.shell:
+        chdir: '/home/nitter/nitter'
+        # nitter binary exists and is newer than the last commit
+        cmd: '[ -f nitter ] && [ $(git show -s --format=%ct) -le $(stat -c %Y nitter) ]'
+
+    - name: 'build nitter'
+      become_user: 'nitter'
+      when: nitter_need_rebuild.rc != 0
+      notify: 'restart nitter service'
+      ansible.builtin.shell:
+        chdir: '/home/nitter/nitter'
+        cmd: 'nimble build -y -d:release && nimble -y scss && nimble -y md'
+
+    - name: 'create nitter config'
+      become_user: 'nitter'
+      notify: 'restart nitter service'
+      ansible.builtin.template:
+        src: 'nitter.conf.j2'
+        dest: '/home/nitter/nitter/nitter.conf'
+
+    - name: 'create nitter service'
+      notify: 'restart nitter service'
+      ansible.builtin.copy:
+        src: 'nitter.service'
+        dest: '/etc/systemd/system/nitter.service'
+
+    - name: 'enable redis service'
+      ansible.builtin.systemd:
+        name: 'redis'
+        state: started
+        enabled: true
+        daemon_reload: true
+
+    - name: 'enable nitter service'
+      ansible.builtin.systemd:
+        name: 'nitter'
+        state: started
+        enabled: true
+        daemon_reload: true
+
+  handlers:
+    - name: 'restart nitter service'
+      ansible.builtin.systemd:
+        name: 'nitter'
+        state: restarted
+        daemon_reload: true
