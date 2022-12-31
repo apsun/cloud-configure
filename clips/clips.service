@@ -1,0 +1,15 @@
+[Unit]
+Description=clips
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=clips
+Group=clips
+ExecStart=/home/clips/clips/clips.py 1837
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target

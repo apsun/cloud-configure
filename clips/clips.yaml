@@ -1,0 +1,49 @@
+- name: 'configure clips'
+  hosts: all
+  become: true
+  tasks:
+    - name: 'install dependencies'
+      ansible.builtin.apt:
+        name:
+          - 'git'
+          - 'python3'
+          - 'python3-cherrypy3'
+          - 'acl'  # needed for become_user
+        state: present
+        update_cache: true
+
+    - name: 'create clips group'
+      ansible.builtin.group:
+        name: 'clips'
+
+    - name: 'create clips user'
+      ansible.builtin.user:
+        name: 'clips'
+        group: 'clips'
+
+    - name: 'clone git repo'
+      become_user: 'clips'
+      notify: 'restart clips service'
+      ansible.builtin.git:
+        repo: 'https://github.com/apsun/clips.git'
+        dest: '/home/clips/clips'
+
+    - name: 'create clips service'
+      notify: 'restart clips service'
+      ansible.builtin.copy:
+        src: 'clips.service'
+        dest: '/etc/systemd/system/clips.service'
+
+    - name: 'enable clips service'
+      ansible.builtin.systemd:
+        name: 'clips'
+        state: started
+        enabled: true
+        daemon_reload: true
+
+  handlers:
+    - name: 'restart clips service'
+      ansible.builtin.systemd:
+        name: 'clips'
+        state: restarted
+        daemon_reload: true
