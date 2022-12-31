@@ -10,3 +10,10 @@
 </VirtualHost>
 
 {% endif %}
+
+# 404 for unknown subdomains
+<VirtualHost *:*>
+        Redirect 404 /
+
+        Include /etc/apache2/letsencrypt.conf
+</VirtualHost>
