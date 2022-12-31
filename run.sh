@@ -35,7 +35,8 @@ ansible() {
     ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook "${1:-ansible.yaml}" \
         -i "$(ip | paste -sd,)," \
         -u "${VAR_UNIXNAME}" \
-        -e "domain_name=${VAR_DOMAIN_NAME}"
+        -e "domain_name=${VAR_DOMAIN_NAME}" \
+        "${@:2}"
 }
 
 "$@"
