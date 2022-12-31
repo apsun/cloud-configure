@@ -7,3 +7,4 @@
 - import_playbook: 'fish/fish.yaml'
 - import_playbook: 'clips/clips.yaml'
 - import_playbook: 'gastrak/gastrak.yaml'
+- import_playbook: 'nitter/nitter.yaml'
