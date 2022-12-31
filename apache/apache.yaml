@@ -2,7 +2,6 @@
   hosts: all
   become: true
   vars:
-    hostname: '{{ ansible_hostname }}'
     fqdn: '{{ hostname }}.{{ domain_name }}'
     enable_ssl: false
 

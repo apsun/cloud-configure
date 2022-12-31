@@ -2,7 +2,6 @@
   hosts: all
   become: true
   vars:
-    hostname: '{{ ansible_hostname }}'
     fqdn: '{{ hostname }}.{{ domain_name }}'
     public_ip: '{{ inventory_hostname }}'
     cloudflare_api_token: '{{ lookup("ansible.builtin.pipe", "pass cloudflare.com/certbot") }}'
