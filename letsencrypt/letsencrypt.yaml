@@ -34,6 +34,7 @@
         type: 'A'
         record: '{{ hostname }}'
         value: '{{ public_ip }}'
+        solo: true
 
     - name: 'create CNAME record'
       community.general.cloudflare_dns:
@@ -42,6 +43,7 @@
         type: 'CNAME'
         record: '*.{{ hostname }}'
         value: '{{ fqdn }}'
+        solo: true
 
     - name: 'check if cert already exists'
       register: letsencrypt_initialized
