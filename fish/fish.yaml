@@ -19,6 +19,7 @@
       ansible.builtin.user:
         name: 'fish'
         group: 'fish'
+        shell: '/bin/bash'
 
     - name: 'clone git repo'
       become_user: 'fish'

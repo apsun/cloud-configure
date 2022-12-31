@@ -19,6 +19,7 @@
       ansible.builtin.user:
         name: 'gastrak'
         group: 'gastrak'
+        shell: '/bin/bash'
 
     - name: 'clone git repo'
       become_user: 'gastrak'
