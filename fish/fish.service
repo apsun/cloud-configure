@@ -1,0 +1,17 @@
+[Unit]
+Description=fish
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=fish
+Group=fish
+WorkingDirectory=/home/fish/fish
+Environment=CGO_ENABLED=0
+ExecStart=go run /home/fish/fish/main.go -port 8264
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target

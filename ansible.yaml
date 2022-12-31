@@ -4,3 +4,4 @@
 - import_playbook: 'letsencrypt/letsencrypt.yaml'
 - import_playbook: 'apache/apache.yaml'
 - import_playbook: 'gastrak/gastrak.yaml'
+- import_playbook: 'fish/fish.yaml'

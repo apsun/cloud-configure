@@ -1,0 +1,48 @@
+- name: 'configure fish'
+  hosts: all
+  become: true
+  tasks:
+    - name: 'install dependencies'
+      ansible.builtin.apt:
+        name:
+          - 'git'
+          - 'golang'
+          - 'acl'  # needed for become_user
+        state: present
+        update_cache: true
+
+    - name: 'create fish group'
+      ansible.builtin.group:
+        name: 'fish'
+
+    - name: 'create fish user'
+      ansible.builtin.user:
+        name: 'fish'
+        group: 'fish'
+
+    - name: 'clone git repo'
+      become_user: 'fish'
+      notify: 'restart fish service'
+      ansible.builtin.git:
+        repo: 'https://github.com/apsun/fish.git'
+        dest: '/home/fish/fish'
+
+    - name: 'create fish service'
+      notify: 'restart fish service'
+      ansible.builtin.copy:
+        src: 'fish.service'
+        dest: '/etc/systemd/system/fish.service'
+
+    - name: 'enable fish service'
+      ansible.builtin.systemd:
+        name: 'fish'
+        state: started
+        enabled: true
+        daemon_reload: true
+
+  handlers:
+    - name: 'restart fish service'
+      ansible.builtin.systemd:
+        name: 'fish'
+        state: restarted
+        daemon_reload: true
