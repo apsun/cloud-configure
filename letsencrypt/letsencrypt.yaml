@@ -65,7 +65,6 @@
           --dns-cloudflare
           --dns-cloudflare-credentials /root/.secrets/certbot/cloudflare.ini
           --domains *.{{ fqdn }},{{ fqdn }}
-          --dry-run  # TODO
 
     - name: 'enable certbot renew timer'
       ansible.builtin.systemd:
