@@ -38,31 +38,44 @@
       ansible.builtin.command:
         cmd: '/home/gastrak/gastrak/data/run-gastrak.sh'
 
-    - name: 'create server systemd service'
+    - name: 'create gastrak service'
+      notify: 'restart gastrak service'
       ansible.builtin.copy:
         src: 'gastrak.service'
         dest: '/etc/systemd/system/gastrak.service'
 
-    - name: 'enable server systemd service'
+    - name: 'enable gastrak service'
       ansible.builtin.systemd:
         name: 'gastrak'
         state: started
         enabled: true
         daemon_reload: true
 
-    - name: 'create refresh systemd service'
+    - name: 'create gastrak-refresh service'
       ansible.builtin.copy:
         src: 'gastrak-refresh.service'
         dest: '/etc/systemd/system/gastrak-refresh.service'
 
-    - name: 'create refresh systemd timer'
+    - name: 'create gastrak-refresh timer'
+      notify: 'restart gastrak-refresh timer'
       ansible.builtin.copy:
         src: 'gastrak-refresh.timer'
         dest: '/etc/systemd/system/gastrak-refresh.timer'
 
-    - name: 'enable refresh systemd timer'
+    - name: 'enable gastrak-refresh timer'
       ansible.builtin.systemd:
         name: 'gastrak-refresh.timer'
         state: started
         enabled: true
         daemon_reload: true
+
+  handlers:
+    - name: 'restart gastrak service'
+      ansible.builtin.systemd:
+        name: 'gastrak'
+        state: restarted
+
+    - name: 'restart gastrak-refresh timer'
+      ansible.builtin.systemd:
+        name: 'gastrak-refresh.timer'
+        state: restarted
