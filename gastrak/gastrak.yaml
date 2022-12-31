@@ -22,6 +22,9 @@
 
     - name: 'clone git repo'
       become_user: 'gastrak'
+      notify:
+        - 'restart gastrak service'
+        - 'restart gastrak-refresh timer'
       ansible.builtin.git:
         repo: 'https://github.com/apsun/gastrak.git'
         dest: '/home/gastrak/gastrak'
