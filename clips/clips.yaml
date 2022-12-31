@@ -9,8 +9,6 @@
           - 'python3'
           - 'python3-cherrypy3'
           - 'acl'  # needed for become_user
-        state: present
-        update_cache: true
 
     - name: 'create clips group'
       ansible.builtin.group:

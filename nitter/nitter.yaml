@@ -12,8 +12,6 @@
           - 'redis-server'
           - 'libsass-dev'
           - 'acl'  # needed for become_user
-        state: present
-        update_cache: true
 
     - name: 'add backports repo'
       ansible.builtin.apt_repository:

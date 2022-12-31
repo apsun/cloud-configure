@@ -29,7 +29,6 @@
       ansible.builtin.apt:
         name:
           - 'apache2'
-        update_cache: true
 
     - name: 'enable modules'
       loop: '{{ modules }}'

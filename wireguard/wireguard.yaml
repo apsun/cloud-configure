@@ -16,8 +16,6 @@
       ansible.builtin.apt:
         name:
           - 'wireguard'
-        state: present
-        update_cache: true
 
     - name: 'enable IPv4 forwarding'
       ansible.posix.sysctl:

@@ -6,8 +6,6 @@
       ansible.builtin.apt:
         name:
           - 'unbound'
-        state: present
-        update_cache: true
 
     - name: 'create server config'
       notify: 'restart unbound service'

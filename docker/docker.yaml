@@ -6,7 +6,6 @@
       ansible.builtin.apt:
         name:
           - 'gpg'
-        state: present
 
     - name: 'add gpg key'
       ansible.builtin.apt_key:
@@ -20,8 +19,6 @@
       ansible.builtin.apt:
         name:
           - 'docker-ce'
-        state: present
-        update_cache: true
 
     - name: 'enable docker service'
       ansible.builtin.systemd:

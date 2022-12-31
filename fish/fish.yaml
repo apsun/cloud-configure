@@ -8,8 +8,6 @@
           - 'git'
           - 'golang'
           - 'acl'  # needed for become_user
-        state: present
-        update_cache: true
 
     - name: 'create fish group'
       ansible.builtin.group:

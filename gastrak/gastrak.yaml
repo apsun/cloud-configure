@@ -8,8 +8,6 @@
           - 'git'
           - 'golang'
           - 'acl'  # needed for become_user
-        state: present
-        update_cache: true
 
     - name: 'create gastrak group'
       ansible.builtin.group:
