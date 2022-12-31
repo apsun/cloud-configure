@@ -45,6 +45,7 @@
       become_user: 'nitter'
       register: nitter_need_rebuild
       failed_when: false
+      changed_when: nitter_need_rebuild.rc != 0
       ansible.builtin.shell:
         chdir: '/home/nitter/nitter'
         # nitter binary exists and is newer than the last commit
