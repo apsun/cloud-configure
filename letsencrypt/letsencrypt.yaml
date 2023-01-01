@@ -49,11 +49,6 @@
       ansible.builtin.stat:
         path: '/etc/letsencrypt/renewal/{{ fqdn }}.conf'
 
-    - name: 'wait for DNS record propagation'
-      when: not letsencrypt_initialized.stat.exists
-      ansible.builtin.pause:
-        seconds: 30
-
     - name: 'request new cert'
       when: not letsencrypt_initialized.stat.exists
       ansible.builtin.shell:
