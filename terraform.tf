@@ -20,6 +20,7 @@ provider "aws" {
   profile = "terraform"
 }
 
+/*
 resource "aws_instance" "node" {
   ami                         = "ami-0208c4ce9b9b6b33c"
   instance_type               = "t4g.small"
@@ -33,8 +34,8 @@ resource "aws_instance" "node" {
 output "node_public_ip" {
   value = aws_instance.node.public_ip
 }
+*/
 
-/*
 resource "aws_lightsail_instance" "node" {
   name              = var.hostname
   availability_zone = "us-west-2a"
@@ -56,4 +57,3 @@ resource "aws_lightsail_instance_public_ports" "node" {
 output "node_public_ip" {
   value = aws_lightsail_instance.node.public_ip_address
 }
-*/
