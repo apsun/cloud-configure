@@ -33,7 +33,7 @@
         path: '/etc/letsencrypt/renewal/{{ fqdn }}.conf'
 
     - name: 'request new cert'
-      when: not letsencrypt_initialized.stat.exists
+      when: enable_ssl and not letsencrypt_initialized.stat.exists
       ansible.builtin.shell:
         cmd: >-
           certbot certonly
