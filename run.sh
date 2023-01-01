@@ -1,14 +1,20 @@
-#!/bin/sh
+#!/bin/bash
 set -euo pipefail
+
+SCRIPT_DIR="$(dirname "$0")"
 
 VAR_DOMAIN_NAME=crossbowffs.com
 VAR_HOSTNAME=kosuzu
 VAR_UNIXNAME=admin
 VAR_SSH_KEY_NAME=sachi-linux
 
+terraform() {
+    command terraform -chdir="${SCRIPT_DIR}" "$@"
+}
+
 apply() {
     terraform init -upgrade
-    terraform apply -auto-approve \
+    terraform apply \
         -var hostname="${VAR_HOSTNAME}" \
         -var ssh_key_name="${VAR_SSH_KEY_NAME}"
     ansible
@@ -16,7 +22,14 @@ apply() {
 
 destroy() {
     terraform init -upgrade
-    terraform destroy -auto-approve \
+    terraform destroy \
+        -var hostname="${VAR_HOSTNAME}" \
+        -var ssh_key_name="${VAR_SSH_KEY_NAME}"
+}
+
+refresh() {
+    terraform init -upgrade
+    terraform refresh \
         -var hostname="${VAR_HOSTNAME}" \
         -var ssh_key_name="${VAR_SSH_KEY_NAME}"
 }
