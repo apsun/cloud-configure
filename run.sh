@@ -7,6 +7,7 @@ VAR_DOMAIN_NAME=crossbowffs.com
 VAR_HOSTNAME=kosuzu
 VAR_UNIXNAME=admin
 VAR_SSH_KEY_NAME=sachi-linux
+VAR_ENABLE_SSL=
 
 terraform() {
     command terraform -chdir="${SCRIPT_DIR}" "$@"
@@ -22,6 +23,7 @@ apply() {
 
 destroy() {
     terraform init -upgrade
+    ansible dns/dns.yaml -e enable_dns=
     terraform destroy \
         -var hostname="${VAR_HOSTNAME}" \
         -var ssh_key_name="${VAR_SSH_KEY_NAME}"
@@ -48,6 +50,7 @@ ansible() {
         -u "${VAR_UNIXNAME}" \
         -e "hostname=${VAR_HOSTNAME}" \
         -e "domain_name=${VAR_DOMAIN_NAME}" \
+        -e "enable_ssl=${VAR_ENABLE_SSL}" \
         "${@:2}"
 }
 

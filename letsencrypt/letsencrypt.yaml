@@ -2,9 +2,10 @@
   hosts: all
   become: true
   vars:
+    enable_ssl: true
     fqdn: '{{ hostname }}.{{ domain_name }}'
     public_ip: '{{ inventory_hostname }}'
-    cloudflare_api_token: '{{ lookup("ansible.builtin.pipe", "pass cloudflare.com/certbot") }}'
+    cloudflare_api_token: '{{ lookup("ansible.builtin.pipe", "pass cloudflare.com/edit-dns-api-token") }}'
     letsencrypt_email: 'letsencrypt@{{ domain_name }}'
 
   tasks:
@@ -25,24 +26,6 @@
         src: 'cloudflare.ini.j2'
         dest: '/root/.secrets/certbot/cloudflare.ini'
         mode: '0600'
-
-    - name: 'create A record'
-      community.general.cloudflare_dns:
-        api_token: '{{ cloudflare_api_token }}'
-        zone: '{{ domain_name }}'
-        type: 'A'
-        record: '{{ hostname }}'
-        value: '{{ public_ip }}'
-        solo: true
-
-    - name: 'create CNAME record'
-      community.general.cloudflare_dns:
-        api_token: '{{ cloudflare_api_token }}'
-        zone: '{{ domain_name }}'
-        type: 'CNAME'
-        record: '*.{{ hostname }}'
-        value: '{{ fqdn }}'
-        solo: true
 
     - name: 'check if cert already exists'
       register: letsencrypt_initialized

@@ -1,0 +1,48 @@
+- name: 'configure dns'
+  hosts: all
+  vars:
+    enable_dns: true
+    fqdn: '{{ hostname }}.{{ domain_name }}'
+    public_ip: '{{ inventory_hostname }}'
+    cloudflare_api_token: '{{ lookup("ansible.builtin.pipe", "pass cloudflare.com/edit-dns-api-token") }}'
+
+  tasks:
+    - name: 'add A record'
+      when: enable_dns
+      community.general.cloudflare_dns:
+        state: present
+        api_token: '{{ cloudflare_api_token }}'
+        zone: '{{ domain_name }}'
+        type: 'A'
+        record: '{{ hostname }}'
+        value: '{{ public_ip }}'
+        solo: true
+
+    - name: 'add CNAME record'
+      when: enable_dns
+      community.general.cloudflare_dns:
+        state: present
+        api_token: '{{ cloudflare_api_token }}'
+        zone: '{{ domain_name }}'
+        type: 'CNAME'
+        record: '*.{{ hostname }}'
+        value: '{{ fqdn }}'
+        solo: true
+
+    - name: 'delete CNAME record'
+      when: not enable_dns
+      community.general.cloudflare_dns:
+        state: absent
+        api_token: '{{ cloudflare_api_token }}'
+        zone: '{{ domain_name }}'
+        type: 'CNAME'
+        record: '*.{{ hostname }}'
+
+    - name: 'delete A record'
+      when: not enable_dns
+      community.general.cloudflare_dns:
+        state: absent
+        api_token: '{{ cloudflare_api_token }}'
+        zone: '{{ domain_name }}'
+        type: 'A'
+        record: '{{ hostname }}'
