@@ -11,6 +11,7 @@
     - name: 'install useful utilities'
       ansible.builtin.apt:
         name:
+          - 'vim'
           - 'tree'
           - 'tmux'
           - 'jq'
@@ -18,3 +19,8 @@
           - 'htop'
           - 'strace'
           - 'ldnsutils'
+
+    - name: 'choose vim as editor'
+      community.general.alternatives:
+        name: 'editor'
+        path: '/usr/bin/vim.basic'
