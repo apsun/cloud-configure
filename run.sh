@@ -18,6 +18,7 @@ apply() {
     terraform apply \
         -var hostname="${VAR_HOSTNAME}" \
         -var ssh_key_name="${VAR_SSH_KEY_NAME}"
+    ansible dns/dns.yaml
     ansible
 }
 
@@ -25,13 +26,6 @@ destroy() {
     terraform init -upgrade
     ansible dns/dns.yaml -e enable_dns=
     terraform destroy \
-        -var hostname="${VAR_HOSTNAME}" \
-        -var ssh_key_name="${VAR_SSH_KEY_NAME}"
-}
-
-refresh() {
-    terraform init -upgrade
-    terraform refresh \
         -var hostname="${VAR_HOSTNAME}" \
         -var ssh_key_name="${VAR_SSH_KEY_NAME}"
 }
