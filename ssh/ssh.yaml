@@ -1,0 +1,14 @@
+- name: 'configure ssh'
+  hosts: all
+  vars:
+    authorized_key_names:
+      - andrew@sachi
+      - ish@kotone
+      - ish@komachi
+
+  tasks:
+    - name: 'configure authorized keys'
+      with_items: '{{ authorized_key_names }}'
+      ansible.posix.authorized_key:
+        user: '{{ ansible_user }}'
+        key: '{{ lookup("ansible.builtin.pipe", "pass ssh/" + item | quote) }}'

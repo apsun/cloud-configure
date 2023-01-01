@@ -1,3 +1,4 @@
+- import_playbook: 'ssh/ssh.yaml'
 - import_playbook: 'packages/packages.yaml'
 - import_playbook: 'docker/docker.yaml'
 - import_playbook: 'wireguard/wireguard.yaml'
