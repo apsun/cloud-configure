@@ -1,0 +1,13 @@
+- name: 'configure dotfiles'
+  hosts: all
+  tasks:
+    - name: 'install rsync'
+      become: true
+      ansible.builtin.apt:
+        name:
+          - 'rsync'
+
+    - name: 'sync dotfiles'
+      ansible.posix.synchronize:
+        src: 'dotfiles/'
+        dest: '.'
