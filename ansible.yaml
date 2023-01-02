@@ -1,4 +1,5 @@
 - import_playbook: 'init/init.yaml'
+- import_playbook: 'hostname/hostname.yaml'
 - import_playbook: 'packages/packages.yaml'
 - import_playbook: 'ssh/ssh.yaml'
 - import_playbook: 'dotfiles/dotfiles.yaml'

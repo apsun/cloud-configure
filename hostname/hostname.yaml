@@ -1,0 +1,20 @@
+- name: 'configure hostname'
+  hosts: all
+  become: true
+  tasks:
+    - name: 'update cloud-init config'
+      register: cloud_cfg
+      ansible.builtin.lineinfile:
+        path: '/etc/cloud/cloud.cfg'
+        regexp: '^fqdn:'
+        line: 'fqdn: {{ hostname }}.{{ domain_name }}'
+
+    - name: 'update hostname'
+      when: cloud_cfg.changed
+      ansible.builtin.shell:
+        cmd: 'cloud-init single --name update_hostname'
+
+    - name: 'update /etc/hosts'
+      when: cloud_cfg.changed
+      ansible.builtin.shell:
+        cmd: 'cloud-init single --name update_etc_hosts'
