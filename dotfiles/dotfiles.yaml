@@ -11,3 +11,4 @@
       ansible.posix.synchronize:
         src: 'dotfiles/'
         dest: '.'
+        times: false
