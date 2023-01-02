@@ -13,6 +13,7 @@
 
 # 404 for unknown subdomains
 <VirtualHost *:*>
+        ServerName .
         Redirect 404 /
 
         Include /etc/apache2/letsencrypt.conf
