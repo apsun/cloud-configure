@@ -39,6 +39,10 @@ To create a new server instance:
 ./run.sh apply
 ```
 
+Note: the `aws_lightsail_instance_public_ports` resource is a bit buggy and
+will try to re-create the association every time you run `apply`. This won't
+affect the instance itself; just the firewall rule.
+
 To delete the server instance:
 
 ```Bash
@@ -56,5 +60,5 @@ SSL is disabled by default (to avoid getting rate-limited by letsencrypt when
 repeatedly creating and destroying new instances). To enable it, set
 `VAR_ENABLE_SSL=` to a non-empty value and run Ansible again.
 
-If you stop the instance, it might lose its public IP address. When this
-happens, run `apply` again.
+If you stop the instance and are not using a static IP, it might lose its
+public IP address. When this happens, run `apply` again.
