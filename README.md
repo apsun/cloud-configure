@@ -24,6 +24,10 @@ aws_secret_access_key = YYY
 The public ssh key referenced by `VAR_SSH_KEY_NAME` needs to already be
 uploaded to EC2/Lightsail in the appropriate region.
 
+If `VAR_STATIC_IP_NAME` is non-empty, it needs to reference an existing
+elastic IP allocation ID (EC2) or static IP name (Lightsail). The IP is not
+managed by Terraform and will not be automatically destroyed.
+
 You need to have a Cloudflare API token with Zone.DNS:Edit permissions stored
 in `pass` at `cloudflare.com/edit-dns-api-token`.
 
