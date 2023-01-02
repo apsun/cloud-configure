@@ -33,14 +33,14 @@ in `pass` at `cloudflare.com/edit-dns-api-token`.
 
 ## Usage
 
-To create a new server instance:
+To create a new server instance or re-apply all changes (including Ansible):
 
 ```Bash
 ./run.sh apply
 ```
 
 Note: the `aws_lightsail_instance_public_ports` resource is a bit buggy and
-will try to re-create the association every time you run `apply`. This won't
+will try to re-create the resource every time you run `apply`. This won't
 affect the instance itself; just the firewall rule.
 
 To delete the server instance:
@@ -49,7 +49,7 @@ To delete the server instance:
 ./run.sh destroy
 ```
 
-To re-run Ansible after making changes:
+To re-run Ansible after making changes to a playbook:
 
 ```Bash
 ./run.sh ansible  # run all playbooks (excluding dns)
