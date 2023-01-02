@@ -1,5 +1,6 @@
 - name: 'configure dns'
   hosts: all
+  gather_facts: false
   vars:
     enable_dns: true
     fqdn: '{{ hostname }}.{{ domain_name }}'
