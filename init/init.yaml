@@ -1,0 +1,6 @@
+- name: 'initialize'
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: 'wait for target to be reachable'
+      ansible.builtin.wait_for_connection:
