@@ -56,9 +56,9 @@ To re-run Ansible after making changes to a playbook:
 ./run.sh ansible <playbook> [ansible-playbook args]  # run a specific playbook
 ```
 
-SSL is disabled by default (to avoid getting rate-limited by letsencrypt when
-repeatedly creating and destroying new instances). To enable it, set
-`VAR_ENABLE_SSL=` to a non-empty value and run Ansible again.
+SSL can be disabled by setting `VAR_ENABLE_SSL` to an empty value. This can
+be useful to avoid getting rate-limited by letsencrypt when repeatedly
+creating and destroying new instances.
 
 If you stop the instance and are not using a static IP, it might lose its
 public IP address. When this happens, run `apply` again.
