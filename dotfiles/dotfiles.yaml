@@ -13,3 +13,21 @@
         dest: '.'
         checksum: true
         times: false
+
+    - name: 'infinite bash histsize'
+      ansible.builtin.lineinfile:
+        path: '.bashrc'
+        regexp: '^HISTSIZE='
+        line: 'HISTSIZE='
+
+    - name: 'infinite bash histfilesize'
+      ansible.builtin.lineinfile:
+        path: '.bashrc'
+        regexp: '^HISTFILESIZE='
+        line: 'HISTFILESIZE='
+
+    - name: 'timestamped bash history'
+      ansible.builtin.lineinfile:
+        path: '.bashrc'
+        regexp: '^HISTTIMEFORMAT='
+        line: 'HISTTIMEFORMAT="%F %T "'
