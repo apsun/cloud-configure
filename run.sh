@@ -4,12 +4,12 @@ set -euo pipefail
 SCRIPT_DIR="$(dirname "$0")"
 
 VAR_DOMAIN_NAME=crossbowffs.com
-VAR_HOSTNAME=kosuzu
-VAR_STATIC_IP_NAME=kosuzu-ip
+VAR_HOSTNAME=minori
+VAR_STATIC_IP_NAME=natsume-ip
 VAR_SSH_KEY_NAME=sachi-linux
 VAR_LIGHTSAIL=true
 VAR_UNIXNAME=admin
-VAR_ENABLE_SSL=
+VAR_ENABLE_SSL=1
 
 terraform() {
     command terraform -chdir="${SCRIPT_DIR}" "$@"
