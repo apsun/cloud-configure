@@ -1,6 +1,7 @@
 - name: 'configure nitter'
   hosts: all
   become: true
+  gather_facts: true
   vars:
     fqdn: '{{ hostname }}.{{ domain_name }}'
 

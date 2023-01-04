@@ -1,6 +1,7 @@
 - name: 'configure docker'
   hosts: all
   become: true
+  gather_facts: true
   tasks:
     - name: 'install gpg'
       ansible.builtin.apt:

@@ -45,7 +45,7 @@ ssh() {
 }
 
 ansible() {
-    ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook "${1:-ansible.yaml}" \
+    ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_GATHERING=explicit ansible-playbook "${1:-ansible.yaml}" \
         -i "$(ip)," \
         -u "${VAR_UNIXNAME}" \
         -e "hostname=${VAR_HOSTNAME}" \
