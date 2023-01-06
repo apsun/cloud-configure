@@ -5,7 +5,7 @@
     enable_dns: true
     fqdn: '{{ hostname }}.{{ domain_name }}'
     public_ip: '{{ inventory_hostname }}'
-    cloudflare_api_token: '{{ lookup("ansible.builtin.pipe", "pass cloudflare.com/edit-dns-api-token") }}'
+    cloudflare_api_token: '{{ lookup("ansible.builtin.pipe", "pass cloudflare.com/{{ domain_name }}-edit-dns-api-token") }}'
 
   tasks:
     - name: 'add A record'

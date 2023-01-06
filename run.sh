@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(dirname "$0")"
 
-VAR_DOMAIN_NAME=crossbowffs.com
+VAR_DOMAIN_NAME=crossbowffs.net
 VAR_HOSTNAME=minori
 VAR_STATIC_IP_NAME=natsume-ip
 VAR_SSH_KEY_NAME=sachi-linux
