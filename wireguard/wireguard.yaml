@@ -11,6 +11,7 @@
       - 'dad'
       - 'komachi'
       - 'pixel6a'
+
   tasks:
     - name: 'install packages'
       ansible.builtin.apt:
@@ -35,7 +36,7 @@
     - name: 'use fq qdisc'
       ansible.posix.sysctl:
         name: 'net.core.default_qdisc'
-        value: 'fq'  # TODO: fq_codel?
+        value: 'fq'
 
     - name: 'create wg0 config'
       notify: 'restart wireguard service'
