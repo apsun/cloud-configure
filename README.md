@@ -29,7 +29,7 @@ elastic IP allocation ID (EC2) or static IP name (Lightsail). The IP is not
 managed by Terraform and will not be automatically destroyed.
 
 You need to have a Cloudflare API token with Zone.DNS:Edit permissions stored
-in `pass` at `cloudflare.com/edit-dns-api-token`.
+in `pass` at `cloudflare.com/${VAR_DOMAIN_NAME}-edit-dns-api-token`.
 
 ## Usage
 
