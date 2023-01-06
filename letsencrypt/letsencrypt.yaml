@@ -6,7 +6,6 @@
     fqdn: '{{ hostname }}.{{ domain_name }}'
     public_ip: '{{ inventory_hostname }}'
     cloudflare_api_token: '{{ lookup("ansible.builtin.pipe", "pass cloudflare.com/{{ domain_name }}-edit-dns-api-token") }}'
-    letsencrypt_email: 'letsencrypt@{{ domain_name }}'
 
   tasks:
     - name: 'install packages'
