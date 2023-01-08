@@ -1,13 +1,14 @@
 - name: 'configure gastrak'
   hosts: all
   become: true
+  gather_facts: true
   tasks:
-    - name: 'install dependencies'
+    - name: 'install go'
       ansible.builtin.apt:
         name:
-          - 'git'
           - 'golang'
-          - 'acl'  # needed for become_user
+        state: latest
+        default_release: '{{ ansible_distribution_release }}-backports'
 
     - name: 'create gastrak group'
       ansible.builtin.group:

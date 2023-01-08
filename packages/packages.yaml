@@ -1,7 +1,12 @@
 - name: 'configure packages'
   hosts: all
   become: true
+  gather_facts: true
   tasks:
+    - name: 'add backports repo'
+      ansible.builtin.apt_repository:
+        repo: 'deb http://deb.debian.org/debian {{ ansible_distribution_release }}-backports main'
+
     - name: 'update all packages'
       ansible.builtin.apt:
         name: '*'
@@ -11,6 +16,8 @@
     - name: 'install useful utilities'
       ansible.builtin.apt:
         name:
+          - 'acl'  # needed for become_user
+          - 'git'
           - 'vim'
           - 'tree'
           - 'tmux'

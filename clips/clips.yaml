@@ -5,10 +5,8 @@
     - name: 'install dependencies'
       ansible.builtin.apt:
         name:
-          - 'git'
           - 'python3'
           - 'python3-cherrypy3'
-          - 'acl'  # needed for become_user
 
     - name: 'create clips group'
       ansible.builtin.group:

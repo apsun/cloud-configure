@@ -9,14 +9,8 @@
     - name: 'install dependencies'
       ansible.builtin.apt:
         name:
-          - 'git'
           - 'redis-server'
           - 'libsass-dev'
-          - 'acl'  # needed for become_user
-
-    - name: 'add backports repo'
-      ansible.builtin.apt_repository:
-        repo: 'deb http://deb.debian.org/debian {{ ansible_distribution_release }}-backports main'
 
     - name: 'install nim'
       ansible.builtin.apt:
