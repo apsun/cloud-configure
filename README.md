@@ -7,9 +7,6 @@ that instance.
 
 ## Environment assumptions
 
-Some playbooks read secrets from [`pass`](https://www.passwordstore.org/),
-e.g. `wireguard/<peer name>`, `ssh/<public key name>`.
-
 You need to have an AWS IAM user named `terraform` configured with the
 appropriate permissions (`ec2:*` if creating an EC2 instance, or `lightsail:*`
 if creating a Lightsail instance). The auth keys should be stored in
@@ -28,8 +25,14 @@ If `VAR_STATIC_IP_NAME` is non-empty, it needs to reference an existing
 elastic IP allocation ID (EC2) or static IP name (Lightsail). The IP is not
 managed by Terraform and will not be automatically destroyed.
 
+Some playbooks read secrets from [`pass`](https://www.passwordstore.org/),
+e.g. `wireguard/<peer name>`, `ssh/<public key name>`.
+
 You need to have a Cloudflare API token with Zone.DNS:Edit permissions stored
 in `pass` at `cloudflare.com/${VAR_DOMAIN_NAME}-edit-dns-api-token`.
+
+You need to have an email address used to register with letsencrypt stored in
+`pass` at `letsencrypt.org/email`.
 
 ## Usage
 

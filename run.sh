@@ -10,7 +10,6 @@ VAR_SSH_KEY_NAME=sachi-linux
 VAR_LIGHTSAIL=true
 VAR_UNIXNAME=admin
 VAR_ENABLE_SSL=1
-VAR_LETSENCRYPT_EMAIL=letsencrypt@crossbowffs.com
 
 terraform() {
     command terraform -chdir="${SCRIPT_DIR}" "$@"
@@ -52,7 +51,6 @@ ansible() {
         -e "hostname=${VAR_HOSTNAME}" \
         -e "domain_name=${VAR_DOMAIN_NAME}" \
         -e "enable_ssl=${VAR_ENABLE_SSL}" \
-        -e "letsencrypt_email=${VAR_LETSENCRYPT_EMAIL}" \
         "${@:2}"
 }
 
