@@ -4,6 +4,7 @@
   vars:
     server: 'minori'
     clients:
+      - 't450s'
       - 'rin'
       - 'sachi'
       - 'kotone'
