@@ -17,6 +17,7 @@
       ansible.builtin.apt:
         name:
           - 'wireguard'
+          - 'unbound'
 
     - name: 'enable IPv4 forwarding'
       ansible.posix.sysctl:
@@ -51,8 +52,31 @@
         state: started
         enabled: true
 
+    - name: 'create base unbound config'
+      notify: 'restart unbound service'
+      ansible.builtin.copy:
+        src: 'unbound.conf'
+        dest: '/etc/unbound/unbound.conf.d/server.conf'
+
+    - name: 'create wireguard unbound config'
+      notify: 'restart unbound service'
+      ansible.builtin.template:
+        src: 'unbound-wireguard.conf.j2'
+        dest: '/etc/unbound/unbound.conf.d/wireguard.conf'
+
+    - name: 'enable unbound service'
+      ansible.builtin.systemd:
+        name: 'unbound'
+        state: started
+        enabled: true
+
   handlers:
     - name: 'restart wireguard service'
       ansible.builtin.systemd:
         name: 'wg-quick@wg0'
+        state: restarted
+
+    - name: 'restart unbound service'
+      ansible.builtin.systemd:
+        name: 'unbound'
         state: restarted

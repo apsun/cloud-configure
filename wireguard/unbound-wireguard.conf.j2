@@ -1,0 +1,18 @@
+server:
+  # allow access within wireguard
+  access-control: 10.19.84.0/24 allow
+  access-control: fd07:d3fc:8a02::0/48 allow
+
+  # private dns zone for wireguard
+  private-domain: "wg.{{ domain_name }}"
+  local-zone: "wg.{{ domain_name }}" static
+
+{% for client in clients %}
+{%   set line = lookup('ansible.builtin.pipe', 'pass wireguard/' + client | quote + ' | grep AllowedIPs') %}
+{%   set ips = line.split('=')[1].split(',') %}
+{%   for ip in ips %}
+{%     set type = 'AAAA' if ':' in ip else 'A' %}
+{%     set value = ip.strip().split('/')[0] %}
+  local-data: "{{ client }}.wg.{{ domain_name }} IN {{ type }} {{ value }}"
+{%   endfor %}
+{% endfor %}

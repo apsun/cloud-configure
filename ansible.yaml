@@ -5,7 +5,6 @@
 - import_playbook: 'dotfiles/dotfiles.yaml'
 - import_playbook: 'docker/docker.yaml'
 - import_playbook: 'wireguard/wireguard.yaml'
-- import_playbook: 'unbound/unbound.yaml'
 - import_playbook: 'letsencrypt/letsencrypt.yaml'
 - import_playbook: 'apache/apache.yaml'
 - import_playbook: 'fish/fish.yaml'
