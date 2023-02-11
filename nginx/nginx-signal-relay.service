@@ -1,0 +1,14 @@
+[Unit]
+Description=nginx signal relay
+After=network-online.target remote-fs.target nss-lookup.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/nginx-signal-relay.pid
+ExecStart=/usr/sbin/nginx -c /etc/nginx/nginx-signal-relay.conf -g "pid /var/run/nginx-signal-relay.pid;"
+ExecReload=/bin/sh -c "/bin/kill -s HUP $(/bin/cat /var/run/nginx-signal-relay.pid)"
+ExecStop=/bin/sh -c "/bin/kill -s TERM $(/bin/cat /var/run/nginx-signal-relay.pid)"
+
+[Install]
+WantedBy=multi-user.target

@@ -5,5 +5,5 @@
         ProxyPass "/" "http://127.0.0.1:1837/"
         ProxyPassReverse "/" "http://127.0.0.1:1837/"
 
-        Include /etc/apache2/letsencrypt.conf
+        Include /etc/letsencrypt/options-ssl-apache.conf
 </VirtualHost>

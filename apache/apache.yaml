@@ -48,7 +48,13 @@
       notify: 'restart apache service'
       ansible.builtin.template:
         src: 'letsencrypt.conf.j2'
-        dest: '/etc/apache2/letsencrypt.conf'
+        dest: '/etc/letsencrypt/options-ssl-apache.conf'
+
+    - name: 'modify ports.conf'
+      notify: 'restart apache service'
+      ansible.builtin.copy:
+        src: 'ports.conf'
+        dest: '/etc/apache2/ports.conf'
 
     - name: 'create site configs'
       loop: '{{ sites + sites_disabled }}'
