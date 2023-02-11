@@ -8,15 +8,15 @@
         name:
           - 'gpg'
 
-    - name: 'add gpg key'
+    - name: 'add docker signing key'
       ansible.builtin.apt_key:
         url: 'https://download.docker.com/linux/debian/gpg'
 
-    - name: 'add repo'
+    - name: 'add docker repo'
       ansible.builtin.apt_repository:
         repo: 'deb https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable'
 
-    - name: 'install package'
+    - name: 'install docker'
       ansible.builtin.apt:
         name:
           - 'docker-ce'

@@ -25,7 +25,7 @@
       - '007-invidious'
 
   tasks:
-    - name: 'install packages'
+    - name: 'install apache'
       ansible.builtin.apt:
         name:
           - 'apache2'

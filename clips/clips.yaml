@@ -2,7 +2,7 @@
   hosts: all
   become: true
   tasks:
-    - name: 'install dependencies'
+    - name: 'install cherrypy'
       ansible.builtin.apt:
         name:
           - 'python3'

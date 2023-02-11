@@ -9,7 +9,7 @@
     letsencrypt_email: '{{ lookup("ansible.builtin.pipe", "pass letsencrypt.org/email") }}'
 
   tasks:
-    - name: 'install packages'
+    - name: 'install certbot'
       ansible.builtin.apt:
         name:
           - 'certbot'
