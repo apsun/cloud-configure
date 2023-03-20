@@ -3,6 +3,11 @@
   become: true
   gather_facts: true
   tasks:
+    - name: 'install sqlite'
+      ansible.builtin.apt:
+        name:
+          - 'sqlite3'
+
     - name: 'install go'
       ansible.builtin.apt:
         name:
@@ -20,7 +25,55 @@
         group: 'gastrak'
         shell: '/bin/bash'
 
-    - name: 'clone git repo'
+    - name: 'create .ssh directory'
+      ansible.builtin.file:
+        path: '/home/gastrak/.ssh'
+        state: directory
+        owner: 'gastrak'
+        group: 'gastrak'
+        mode: '0700'
+
+    - name: 'disable ssh host key checking'
+      ansible.builtin.copy:
+        dest: '/home/gastrak/.ssh/config'
+        owner: 'gastrak'
+        group: 'gastrak'
+        content: |
+          Host github.com
+            HostName github.com
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+
+    - name: 'add deploy ssh private key'
+      ansible.builtin.copy:
+        dest: '/home/gastrak/.ssh/id_ed25519'
+        owner: 'gastrak'
+        group: 'gastrak'
+        mode: '0600'
+        content: "{{ lookup('ansible.builtin.pipe', 'pass ssh/gastrak@' + hostname | quote) }}\n"
+
+    - name: 'add deploy ssh public key'
+      ansible.builtin.copy:
+        dest: '/home/gastrak/.ssh/id_ed25519.pub'
+        owner: 'gastrak'
+        group: 'gastrak'
+        content: "{{ lookup('ansible.builtin.pipe', 'pass ssh/gastrak@' + hostname | quote + '.pub') }}\n"
+
+    - name: 'set git user.name'
+      become_user: 'gastrak'
+      ansible.builtin.git_config:
+        scope: global
+        name: 'user.name'
+        value: 'gastrak'
+
+    - name: 'set git user.email'
+      become_user: 'gastrak'
+      ansible.builtin.git_config:
+        scope: global
+        name: 'user.email'
+        value: 'gastrak@{{ hostname }}.{{ domain_name }}'
+
+    - name: 'clone code repo'
       become_user: 'gastrak'
       notify:
         - 'restart gastrak service'
@@ -29,17 +82,19 @@
         repo: 'https://github.com/apsun/gastrak.git'
         dest: '/home/gastrak/gastrak'
 
-    - name: 'check if already initialized'
+    - name: 'clone data repo'
       become_user: 'gastrak'
-      register: gastrak_initialized
-      ansible.builtin.stat:
-        path: '/home/gastrak/gastrak/data/current.csv'
+      register: gastrak_data_repo
+      ansible.builtin.git:
+        repo: 'git@github.com:apsun/gastrak-data.git'
+        dest: '/home/gastrak/gastrak/data'
+        update: false
 
     - name: 'initialize data'
       become_user: 'gastrak'
-      when: not gastrak_initialized.stat.exists
+      when: gastrak_data_repo.changed
       ansible.builtin.command:
-        cmd: '/home/gastrak/gastrak/data/run-gastrak.sh'
+        cmd: '/home/gastrak/gastrak/gastrak/run-gastrak.sh'
 
     - name: 'create gastrak service'
       notify: 'restart gastrak service'

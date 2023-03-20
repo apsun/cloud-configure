@@ -5,4 +5,4 @@ Description=gastrak refresh
 Type=oneshot
 User=gastrak
 Group=gastrak
-ExecStart=/home/gastrak/gastrak/data/run-gastrak.sh
+ExecStart=/home/gastrak/gastrak/gastrak/run-gastrak.sh
