@@ -11,4 +11,4 @@
       with_items: '{{ authorized_key_names }}'
       ansible.posix.authorized_key:
         user: '{{ ansible_user }}'
-        key: '{{ lookup("ansible.builtin.pipe", "pass ssh/" + item | quote) }}'
+        key: '{{ lookup("ansible.builtin.pipe", "pass ssh/" + item | quote + ".pub") }}'
