@@ -15,7 +15,6 @@
       ansible.builtin.apt:
         update_cache: true
         upgrade: full
-        dpkg_options: 'force-confnew'
 
     - name: 'reboot the host'
       when: ansible_distribution_release != 'bookworm'
