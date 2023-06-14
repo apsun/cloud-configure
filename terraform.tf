@@ -34,7 +34,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "node" {
-  ami                         = "ami-0208c4ce9b9b6b33c"
+  ami                         = "ami-0e3fabf7e6603a437"
   instance_type               = "t4g.small"
   key_name                    = var.ssh_key_name
   user_data_replace_on_change = true
