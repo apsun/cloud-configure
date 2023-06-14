@@ -4,19 +4,19 @@ MTU = 1280
 
 PostUp = iptables -A FORWARD -i %i -j ACCEPT
 PostUp = iptables -A FORWARD -o %i -j ACCEPT
-PostUp = iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostUp = iptables -t nat -A POSTROUTING -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
 
 PostUp = ip6tables -A FORWARD -i %i -j ACCEPT
 PostUp = ip6tables -A FORWARD -o %i -j ACCEPT
-PostUp = ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostUp = ip6tables -t nat -A POSTROUTING -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
 
 PreDown = iptables -D FORWARD -i %i -j ACCEPT
 PreDown = iptables -D FORWARD -o %i -j ACCEPT
-PreDown = iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+PreDown = iptables -t nat -D POSTROUTING -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
 
 PreDown = ip6tables -D FORWARD -i %i -j ACCEPT
 PreDown = ip6tables -D FORWARD -o %i -j ACCEPT
-PreDown = ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+PreDown = ip6tables -t nat -D POSTROUTING -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
 
 {% for client in clients %}
 # {{ client }}

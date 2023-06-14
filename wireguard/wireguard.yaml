@@ -1,6 +1,7 @@
 - name: 'configure wireguard'
   hosts: all
   become: true
+  gather_facts: true
   vars:
     server: 'minori'
     clients:
