@@ -1,14 +1,11 @@
 - name: 'configure fish'
   hosts: all
   become: true
-  gather_facts: true
   tasks:
     - name: 'install go'
       ansible.builtin.apt:
         name:
           - 'golang'
-        state: latest
-        default_release: '{{ ansible_distribution_release }}-backports'
 
     - name: 'create fish group'
       ansible.builtin.group:

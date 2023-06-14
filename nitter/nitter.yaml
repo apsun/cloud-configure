@@ -1,7 +1,6 @@
 - name: 'configure nitter'
   hosts: all
   become: true
-  gather_facts: true
   vars:
     fqdn: '{{ hostname }}.{{ domain_name }}'
 
@@ -9,15 +8,9 @@
     - name: 'install dependencies'
       ansible.builtin.apt:
         name:
+          - 'nim'
           - 'redis-server'
           - 'libsass-dev'
-
-    - name: 'install nim'
-      ansible.builtin.apt:
-        name:
-          - 'nim'
-        state: latest
-        default_release: '{{ ansible_distribution_release }}-backports'
 
     - name: 'create nitter group'
       ansible.builtin.group:

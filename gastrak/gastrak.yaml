@@ -1,19 +1,12 @@
 - name: 'configure gastrak'
   hosts: all
   become: true
-  gather_facts: true
   tasks:
-    - name: 'install sqlite'
-      ansible.builtin.apt:
-        name:
-          - 'sqlite3'
-
-    - name: 'install go'
+    - name: 'install packages'
       ansible.builtin.apt:
         name:
           - 'golang'
-        state: latest
-        default_release: '{{ ansible_distribution_release }}-backports'
+          - 'sqlite3'
 
     - name: 'create gastrak group'
       ansible.builtin.group:
