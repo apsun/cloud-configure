@@ -53,10 +53,10 @@
         src: 'nginx-signal-relay.service'
         dest: '/etc/systemd/system/nginx-signal-relay.service'
 
-    - name: 'create nginx-signal-relay.conf'
+    - name: 'download nginx-signal-relay.conf'
       notify: 'restart nginx-signal-relay service'
-      ansible.builtin.copy:
-        src: 'nginx-signal-relay.conf'
+      ansible.builtin.get_url:
+        url: 'https://raw.githubusercontent.com/signalapp/Signal-TLS-Proxy/main/data/nginx-relay/nginx.conf'
         dest: '/etc/nginx/nginx-signal-relay.conf'
 
     - name: 'create nginx.conf'
