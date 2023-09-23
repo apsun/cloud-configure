@@ -6,6 +6,7 @@
       - andrew@sachiko
       - ish@kotone
       - ish@komachi
+      - ish@kosuzu
 
   tasks:
     - name: 'configure authorized keys'

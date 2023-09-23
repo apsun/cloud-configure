@@ -14,6 +14,7 @@
       - 'dad'
       - 'komachi'
       - 'pixel6a'
+      - 'kosuzu'
 
   tasks:
     - name: 'install packages'
