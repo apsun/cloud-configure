@@ -15,6 +15,7 @@
       - 'komachi'
       - 'pixel6a'
       - 'kosuzu'
+      - 'sachiko-win'
 
   tasks:
     - name: 'install packages'
