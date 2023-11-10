@@ -2,7 +2,6 @@
   hosts: all
   vars:
     authorized_key_names:
-      - andrew@sachi
       - andrew@sachiko
       - ish@kotone
       - ish@komachi
