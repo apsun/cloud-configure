@@ -3,7 +3,6 @@
   vars:
     authorized_key_names:
       - andrew@sachiko
-      - ish@kotone
       - ish@komachi
       - ish@kosuzu
 
