@@ -41,6 +41,18 @@
         src: 'ssl-dhparams.pem'
         dest: '/etc/letsencrypt/ssl-dhparams.pem'
 
+    - name: 'create nginx-restart service'
+      notify: 'restart nginx-restart timer'
+      ansible.builtin.copy:
+        src: 'nginx-restart.service'
+        dest: '/etc/systemd/system/nginx-restart.service'
+
+    - name: 'create nginx-restart timer'
+      notify: 'restart nginx-restart timer'
+      ansible.builtin.copy:
+        src: 'nginx-restart.timer'
+        dest: '/etc/systemd/system/nginx-restart.timer'
+
     - name: 'create letsencrypt conf'
       notify: 'restart nginx service'
       ansible.builtin.template:
@@ -80,6 +92,14 @@
         enabled: true
         daemon_reload: true
 
+    - name: 'enable nginx-restart timer'
+      when: enable_ssl
+      ansible.builtin.systemd:
+        name: 'nginx-restart.timer'
+        state: started
+        enabled: true
+        daemon_reload: true
+
     - name: 'disable nginx service'
       when: not enable_ssl
       ansible.builtin.systemd:
@@ -95,12 +115,21 @@
         enabled: false
         daemon_reload: true
 
+    - name: 'disable nginx-restart timer'
+      when: not enable_ssl
+      ansible.builtin.systemd:
+        name: 'nginx-restart.timer'
+        state: stopped
+        enabled: false
+        daemon_reload: true
+
   handlers:
     - name: 'restart nginx service'
       when: enable_ssl
       ansible.builtin.systemd:
         name: 'nginx'
         state: restarted
+        daemon_reload: true
 
     - name: 'restart nginx-signal-relay service'
       when: enable_ssl
@@ -109,3 +138,8 @@
         state: restarted
         daemon_reload: true
 
+    - name: 'restart nginx-restart timer'
+      ansible.builtin.systemd:
+        name: 'nginx-restart.timer'
+        state: restarted
+        daemon_reload: true

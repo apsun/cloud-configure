@@ -1,0 +1,6 @@
+[Unit]
+Description=nginx restart
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'systemctl restart nginx-signal-relay && systemctl restart nginx'
