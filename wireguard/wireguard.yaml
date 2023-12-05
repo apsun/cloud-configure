@@ -15,6 +15,7 @@
       - 'pixel6a'
       - 'kosuzu'
       - 'sachiko-win'
+      - 'raspberrypi'
 
   tasks:
     - name: 'install packages'
