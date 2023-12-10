@@ -3,8 +3,8 @@
   vars:
     authorized_key_names:
       - andrew@sachiko
+      - ish@koharu
       - ish@komachi
-      - ish@kosuzu
 
   tasks:
     - name: 'configure authorized keys'
