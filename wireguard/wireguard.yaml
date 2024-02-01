@@ -6,10 +6,8 @@
     server: 'minori'
     clients:
       - 't450s'
-      - 'rin'
       - 'sachiko'
       - 'nonoka'
-      - 'dad'
       - 'komachi'
       - 'pixel6a'
       - 'koharu'
