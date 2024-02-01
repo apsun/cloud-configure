@@ -5,7 +5,7 @@ SCRIPT_DIR="$(dirname "$0")"
 
 VAR_DOMAIN_NAME=crossbowffs.net
 VAR_HOSTNAME=minori
-VAR_STATIC_IP_NAME=minori-ip
+VAR_STATIC_IP_NAME=minori-ip-2
 VAR_SSH_KEY_NAME=andrew-sachiko
 VAR_LIGHTSAIL=true
 VAR_UNIXNAME=admin
