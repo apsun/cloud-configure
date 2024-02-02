@@ -19,25 +19,45 @@
         value: '{{ public_ip }}'
         solo: true
 
-    - name: 'add CNAME record'
+    - name: 'add CNAME record (sub)'
       when: enable_dns
       community.general.cloudflare_dns:
         state: present
         api_token: '{{ cloudflare_api_token }}'
         zone: '{{ domain_name }}'
         type: 'CNAME'
-        record: '*.{{ hostname }}'
+        record: '*'
         value: '{{ fqdn }}'
         solo: true
 
-    - name: 'delete CNAME record'
+    - name: 'add CNAME record (root)'
+      when: enable_dns
+      community.general.cloudflare_dns:
+        state: present
+        api_token: '{{ cloudflare_api_token }}'
+        zone: '{{ domain_name }}'
+        type: 'CNAME'
+        record: '@'
+        value: '{{ fqdn }}'
+        solo: true
+
+    - name: 'delete CNAME record (root)'
       when: not enable_dns
       community.general.cloudflare_dns:
         state: absent
         api_token: '{{ cloudflare_api_token }}'
         zone: '{{ domain_name }}'
         type: 'CNAME'
-        record: '*.{{ hostname }}'
+        record: '@'
+
+    - name: 'delete CNAME record (sub)'
+      when: not enable_dns
+      community.general.cloudflare_dns:
+        state: absent
+        api_token: '{{ cloudflare_api_token }}'
+        zone: '{{ domain_name }}'
+        type: 'CNAME'
+        record: '*'
 
     - name: 'delete A record'
       when: not enable_dns
