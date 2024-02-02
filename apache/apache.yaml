@@ -17,10 +17,10 @@
       - '003-clips'
       - '004-gastrak'
       - '005-fish'
-      - '006-nitter'
 
     sites_disabled:
       - '002-send'
+      - '006-nitter'
       - '007-invidious'
 
   tasks:
