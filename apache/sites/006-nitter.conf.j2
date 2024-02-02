@@ -1,5 +1,5 @@
 <VirtualHost *:*>
-        ServerName nitter.{{ fqdn }}
+        ServerName nitter.{{ domain_name }}
 
         ProxyPreserveHost On
         ProxyPass "/" "http://127.0.0.1:8389/" nocanon

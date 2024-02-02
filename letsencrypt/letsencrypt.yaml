@@ -3,7 +3,6 @@
   become: true
   vars:
     enable_ssl: true
-    fqdn: '{{ hostname }}.{{ domain_name }}'
     public_ip: '{{ inventory_hostname }}'
     cloudflare_api_token: '{{ lookup("ansible.builtin.pipe", "pass cloudflare.com/{{ domain_name }}-edit-dns-api-token") }}'
     letsencrypt_email: '{{ lookup("ansible.builtin.pipe", "pass letsencrypt.org/email") }}'
@@ -30,7 +29,7 @@
     - name: 'check if cert already exists'
       register: letsencrypt_initialized
       ansible.builtin.stat:
-        path: '/etc/letsencrypt/renewal/{{ fqdn }}.conf'
+        path: '/etc/letsencrypt/renewal/{{ domain_name }}.conf'
 
     - name: 'request new cert'
       when: enable_ssl and not letsencrypt_initialized.stat.exists
@@ -42,7 +41,7 @@
           --email {{ letsencrypt_email }}
           --dns-cloudflare
           --dns-cloudflare-credentials /root/.secrets/certbot/cloudflare.ini
-          --domains *.{{ fqdn }},{{ fqdn }}
+          --domains *.{{ domain_name }}
 
     - name: 'enable certbot renew timer'
       ansible.builtin.systemd:

@@ -1,9 +1,6 @@
 - name: 'configure nitter'
   hosts: all
   become: true
-  vars:
-    fqdn: '{{ hostname }}.{{ domain_name }}'
-
   tasks:
     - name: 'install dependencies'
       ansible.builtin.apt:

@@ -3,7 +3,6 @@
   become: true
   vars:
     enable_ssl: true
-    fqdn: '{{ hostname }}.{{ domain_name }}'
 
     modules:
       - 'proxy'

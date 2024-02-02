@@ -10,7 +10,7 @@ events {
 stream {
     map $ssl_preread_server_name $port {
         # if connecting to signal proxy, forward internally to port 4432
-        signal.{{ fqdn }} 4432;
+        signal.{{ domain_name }} 4432;
 
         # otherwise, forward to apache on port 4431 without terminating TLS
         default 4431;
