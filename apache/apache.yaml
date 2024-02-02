@@ -20,8 +20,6 @@
 
     sites_disabled:
       - '002-send'
-      - '006-nitter'
-      - '007-invidious'
 
   tasks:
     - name: 'install apache'
