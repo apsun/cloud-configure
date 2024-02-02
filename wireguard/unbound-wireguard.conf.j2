@@ -5,7 +5,7 @@ server:
 
   # private dns zone for wireguard
   private-domain: "wg.{{ domain_name }}"
-  local-zone: "wg.{{ domain_name }}" static
+  local-zone: "wg.{{ domain_name }}" transparent
 
 {% for client in clients %}
 {%   set line = lookup('ansible.builtin.pipe', 'pass wireguard/' + client | quote + ' | grep AllowedIPs') %}
