@@ -41,7 +41,7 @@
           --email {{ letsencrypt_email }}
           --dns-cloudflare
           --dns-cloudflare-credentials /root/.secrets/certbot/cloudflare.ini
-          --domains *.{{ domain_name }}
+          --domains *.{{ domain_name }},{{ domain_name }}
 
     - name: 'enable certbot renew timer'
       ansible.builtin.systemd:
