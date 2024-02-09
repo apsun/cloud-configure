@@ -36,17 +36,28 @@ destroy() {
         -var lightsail="${VAR_LIGHTSAIL}"
 }
 
-ip() {
+refresh() {
+    terraform init -upgrade
+    terraform apply -refresh-only \
+        -var hostname="${VAR_HOSTNAME}" \
+        -var static_ip_name="${VAR_STATIC_IP_NAME}" \
+        -var ssh_key_name="${VAR_SSH_KEY_NAME}" \
+        -var lightsail="${VAR_LIGHTSAIL}"
+}
+
+_ip() {
     terraform output --raw node_public_ip
 }
 
 ssh() {
-    command ssh "${VAR_UNIXNAME}@$(ip)" "$@"
+    refresh
+    command ssh "${VAR_UNIXNAME}@$(_ip)" "$@"
 }
 
 ansible() {
+    refresh
     ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_GATHERING=explicit ansible-playbook "${1:-ansible.yaml}" \
-        -i "$(ip)," \
+        -i "$(_ip)," \
         -u "${VAR_UNIXNAME}" \
         -e "hostname=${VAR_HOSTNAME}" \
         -e "domain_name=${VAR_DOMAIN_NAME}" \
