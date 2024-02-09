@@ -42,6 +42,11 @@ resource "aws_instance" "node" {
   tags = {
     Name = var.hostname
   }
+  lifecycle {
+    ignore_changes = [
+      key_name,
+    ]
+  }
 }
 
 resource "aws_eip_association" "node" {
@@ -57,6 +62,11 @@ resource "aws_lightsail_instance" "node" {
   bundle_id         = "small_2_0"
   key_pair_name     = var.ssh_key_name
   count             = var.lightsail ? 1 : 0
+  lifecycle {
+    ignore_changes = [
+      key_pair_name,
+    ]
+  }
 }
 
 resource "aws_lightsail_static_ip_attachment" "node" {
