@@ -66,7 +66,7 @@ _ansible() {
 
 ansible() {
     refresh
-    _ansible
+    _ansible "$@"
 }
 
 "$@"
