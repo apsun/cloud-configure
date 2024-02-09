@@ -104,14 +104,8 @@ resource "aws_lightsail_instance_public_ports" "node" {
 
 output "node_public_ip" {
   value = (
-    var.lightsail ? (
-      var.static_ip_name == "" ?
-      aws_lightsail_instance.node[0].public_ip_address :
-      aws_lightsail_static_ip_attachment.node[0].ip_address
-      ) : (
-      var.static_ip_name == "" ?
-      aws_instance.node[0].public_ip :
-      aws_eip_association.node[0].public_ip
-    )
+    var.lightsail ?
+    aws_lightsail_instance.node[0].public_ip_address :
+    aws_instance.node[0].public_ip
   )
 }
