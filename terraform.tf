@@ -78,11 +78,27 @@ resource "aws_lightsail_static_ip_attachment" "node" {
 resource "aws_lightsail_instance_public_ports" "node" {
   instance_name = aws_lightsail_instance.node[0].name
   count         = var.lightsail ? 1 : 0
-
   port_info {
-    protocol  = "all"
+    protocol  = "tcp"
     from_port = 0
     to_port   = 65535
+    cidrs = [
+      "0.0.0.0/0",
+    ]
+    ipv6_cidrs = [
+      "::/0",
+    ]
+  }
+  port_info {
+    protocol  = "udp"
+    from_port = 0
+    to_port   = 65535
+    cidrs = [
+      "0.0.0.0/0",
+    ]
+    ipv6_cidrs = [
+      "::/0",
+    ]
   }
 }
 
