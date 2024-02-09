@@ -22,8 +22,8 @@ apply() {
         -var static_ip_name="${VAR_STATIC_IP_NAME}" \
         -var ssh_key_name="${VAR_SSH_KEY_NAME}" \
         -var lightsail="${VAR_LIGHTSAIL}"
-    ansible dns/dns.yaml
-    ansible
+    _ansible dns/dns.yaml
+    _ansible
 }
 
 destroy() {
@@ -54,8 +54,7 @@ ssh() {
     command ssh "${VAR_UNIXNAME}@$(_ip)" "$@"
 }
 
-ansible() {
-    refresh
+_ansible() {
     ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_GATHERING=explicit ansible-playbook "${1:-ansible.yaml}" \
         -i "$(_ip)," \
         -u "${VAR_UNIXNAME}" \
@@ -63,6 +62,11 @@ ansible() {
         -e "domain_name=${VAR_DOMAIN_NAME}" \
         -e "enable_ssl=${VAR_ENABLE_SSL}" \
         "${@:2}"
+}
+
+ansible() {
+    refresh
+    _ansible
 }
 
 "$@"
