@@ -1,8 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-SCRIPT_DIR="$(dirname "$0")"
-
 VAR_DOMAIN_NAME=crossbowffs.net
 VAR_HOSTNAME=minori
 VAR_STATIC_IP_NAME=
@@ -11,10 +9,6 @@ VAR_SSH_KEY_NAME=andrew-sachiko
 VAR_LIGHTSAIL=true
 VAR_UNIXNAME=admin
 VAR_ENABLE_SSL=1
-
-terraform() {
-    command terraform -chdir="${SCRIPT_DIR}" "$@"
-}
 
 apply() {
     terraform apply \
@@ -85,5 +79,6 @@ ansible() {
     _ansible "$@"
 }
 
+cd "$(dirname "$0")"
 terraform init -upgrade
 "$@"
