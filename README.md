@@ -25,6 +25,10 @@ If `VAR_STATIC_IP_NAME` is non-empty, it needs to reference an existing
 elastic IP allocation ID (EC2) or static IP name (Lightsail). The IP is not
 managed by Terraform and will not be automatically destroyed.
 
+SSL can be disabled by setting `VAR_ENABLE_SSL` to an empty value. This can
+be useful to avoid getting rate-limited by letsencrypt when repeatedly
+creating and destroying new instances.
+
 Some playbooks read secrets from [`pass`](https://www.passwordstore.org/),
 e.g. `wireguard/<peer name>`, `ssh/<public key name>`.
 
@@ -42,10 +46,6 @@ To create a new server instance or re-apply all changes (including Ansible):
 ./run.sh apply
 ```
 
-Note: the `aws_lightsail_instance_public_ports` resource is a bit buggy and
-will try to re-create the resource every time you run `apply`. This won't
-affect the instance itself; just the firewall rule.
-
 To delete the server instance:
 
 ```Bash
@@ -56,12 +56,25 @@ To re-run Ansible after making changes to a playbook:
 
 ```Bash
 ./run.sh ansible  # run all playbooks (excluding dns)
-./run.sh ansible <playbook> [ansible-playbook args]  # run a specific playbook
+./run.sh ansible <playbook/playbook.yaml> [ansible-playbook args]  # run a specific playbook
 ```
 
-SSL can be disabled by setting `VAR_ENABLE_SSL` to an empty value. This can
-be useful to avoid getting rate-limited by letsencrypt when repeatedly
-creating and destroying new instances.
+To request a new public IP address for your instance, set the
+`VAR_TEMP_STATIC_IP_NAME` variable to an existing unused static IP name,
+and run:
 
-If you stop the instance and are not using a static IP, it might lose its
-public IP address. When this happens, run `apply` again.
+```Bash
+./run.sh newip
+```
+
+This will attach and then detach the static IP from the instance, which
+will result in it receiving a new IP address. You can also manually stop
+and restart the instance.
+
+If you manually edit instance properties externally, you can manually refresh
+the Terraform state and apply DNS settings:
+
+```Bash
+./run.sh refresh
+./run.sh ansible dns/dns.yaml
+```
