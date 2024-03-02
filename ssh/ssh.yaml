@@ -4,8 +4,8 @@
     authorized_key_names:
       - andrew@sachiko
       - andrew@t450s
-      - ish@koharu
-      - ish@komachi
+      - shellfish@koharu
+      - shellfish@komachi
 
   tasks:
     - name: 'configure authorized keys'
