@@ -3,18 +3,14 @@
   become: true
   gather_facts: true
   tasks:
-    - name: 'install gpg'
-      ansible.builtin.apt:
-        name:
-          - 'gpg'
-
-    - name: 'add docker signing key'
-      ansible.builtin.apt_key:
-        url: 'https://download.docker.com/linux/debian/gpg'
-
     - name: 'add docker repo'
-      ansible.builtin.apt_repository:
-        repo: 'deb https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable'
+      ansible.builtin.deb822_repository:
+        name: 'docker'
+        types: 'deb'
+        uris: 'https://download.docker.com/linux/debian'
+        signed_by: 'https://download.docker.com/linux/debian/gpg'
+        suites: '{{ ansible_distribution_release }}'
+        components: 'stable'
 
     - name: 'install docker'
       ansible.builtin.apt:
