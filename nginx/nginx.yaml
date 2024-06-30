@@ -10,6 +10,7 @@
       ansible.builtin.apt:
         name:
           - 'nginx'
+          - 'libnginx-mod-stream'
 
     - name: 'create ssl-dhparams.pem'
       notify: 'restart nginx service'
