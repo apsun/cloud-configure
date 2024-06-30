@@ -6,33 +6,10 @@
     enable_ssl: true
 
   tasks:
-    - name: 'install gpg'
-      ansible.builtin.apt:
-        name:
-          - 'gpg'
-
-    - name: 'add nginx signing key'
-      ansible.builtin.apt_key:
-        url: 'https://nginx.org/keys/nginx_signing.key'
-
-    - name: 'add nginx repo'
-      ansible.builtin.apt_repository:
-        repo: 'deb https://nginx.org/packages/mainline/debian {{ ansible_distribution_release }} nginx'
-
-    - name: 'configure nginx repo priority'
-      ansible.builtin.copy:
-        dest: '/etc/apt/preferences.d/99-nginx'
-        content: |
-          Package: *
-          Pin: origin nginx.org
-          Pin: release o=nginx
-          Pin-Priority: 900
-
     - name: 'install nginx'
       ansible.builtin.apt:
         name:
           - 'nginx'
-        update_cache: true
 
     - name: 'create ssl-dhparams.pem'
       notify: 'restart nginx service'
@@ -64,10 +41,16 @@
         src: 'nginx-signal-relay.service'
         dest: '/etc/systemd/system/nginx-signal-relay.service'
 
-    - name: 'download nginx-signal-relay.conf'
+    - name: 'download nginx-signal-relay-impl.conf'
       notify: 'restart nginx-signal-relay service'
       ansible.builtin.get_url:
         url: 'https://raw.githubusercontent.com/signalapp/Signal-TLS-Proxy/main/data/nginx-relay/nginx.conf'
+        dest: '/etc/nginx/nginx-signal-relay-impl.conf'
+
+    - name: 'create nginx-signal-relay.conf'
+      notify: 'restart nginx-signal-relay service'
+      ansible.builtin.copy:
+        src: 'nginx-signal-relay.conf'
         dest: '/etc/nginx/nginx-signal-relay.conf'
 
     - name: 'create nginx.conf'
