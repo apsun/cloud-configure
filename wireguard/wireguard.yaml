@@ -15,6 +15,7 @@
       - 'raspberrypi'
       - 'tsukasa'
       - 'kyou'
+      - 'kotori'
 
   tasks:
     - name: 'install packages'
