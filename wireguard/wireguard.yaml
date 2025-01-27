@@ -72,6 +72,12 @@
         src: 'unbound-wireguard.conf.j2'
         dest: '/etc/unbound/unbound.conf.d/wireguard.conf'
 
+    - name: 'add unbound to resolv.conf'
+      ansible.builtin.lineinfile:
+        path: '/etc/dhcp/dhclient.conf'
+        regexp: '^#?prepend domain-name-servers 127.0.0.1;'
+        line: 'prepend domain-name-servers 127.0.0.1;'
+
     - name: 'enable unbound service'
       ansible.builtin.systemd:
         name: 'unbound'
