@@ -15,6 +15,10 @@
       - 'tsukasa'
       - 'kyou'
       - 'kotori'
+      - 'saria'
+      - 'sheena'
+      - 'nonoka-lin'
+      - 'raspberrypi3b-china'
 
   tasks:
     - name: 'install packages'

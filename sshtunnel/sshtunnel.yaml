@@ -1,0 +1,35 @@
+- name: 'configure ssh tunnel user'
+  hosts: all
+  become: true
+  vars:
+    authorized_key_names:
+      - andrew@raspberrypi3b-china
+
+  tasks:
+    - name: 'create sshtunnel group'
+      ansible.builtin.group:
+        name: 'sshtunnel'
+
+    - name: 'create sshtunnel user'
+      ansible.builtin.user:
+        name: 'sshtunnel'
+        group: 'sshtunnel'
+        shell: '/bin/false'
+
+    - name: 'configure authorized keys'
+      with_items: '{{ authorized_key_names }}'
+      ansible.posix.authorized_key:
+        user: 'sshtunnel'
+        key: '{{ lookup("ansible.builtin.pipe", "pass ssh/" + item | quote + ".pub") }}'
+
+    - name: 'enable GatewayPorts'
+      notify: 'restart sshd service'
+      ansible.builtin.copy:
+        src: 'ssh-gateway-ports.conf'
+        dest: '/etc/ssh/sshd_config.d/ssh-gateway-ports.conf'
+
+  handlers:
+    - name: 'restart sshd service'
+      ansible.builtin.systemd:
+        name: 'sshd'
+        state: restarted
