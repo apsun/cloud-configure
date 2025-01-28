@@ -5,20 +5,16 @@
   vars:
     server: 'minori'
     clients:
-      - 't450s'
       - 'sachiko'
       - 'nonoka'
       - 'komachi'
       - 'koharu'
-      - 'sachiko-win'
       - 'raspberrypi'
       - 'tsukasa'
-      - 'kyou'
       - 'kotori'
       - 'saria'
       - 'sheena'
       - 'nonoka-lin'
-      - 'raspberrypi3b-china'
 
   tasks:
     - name: 'install packages'
