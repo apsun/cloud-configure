@@ -6,3 +6,4 @@ Type=oneshot
 User=gastrak
 Group=gastrak
 ExecStart=/home/gastrak/gastrak/gastrak/run-gastrak.sh
+Environment="ENABLE_GIT=1"
