@@ -7,15 +7,16 @@
     clients:
       - 'sachiko'
       - 'nonoka'
+      - 'nonoka-lin'
       - 'komachi'
       - 'koharu'
-      - 'raspberrypi'
       - 'tsukasa'
       - 'kotori'
       - 'saria'
       - 'sheena'
       - 'kotori-win'
-      - 'nonoka-lin'
+      - 'pikvm'
+      - 'raspberrypizerow'
 
   tasks:
     - name: 'install packages'
