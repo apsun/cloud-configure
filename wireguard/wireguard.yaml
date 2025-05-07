@@ -17,6 +17,7 @@
       - 'kotori-win'
       - 'pikvm'
       - 'raspberrypizerow'
+      - 'bastet'
 
   tasks:
     - name: 'install packages'
