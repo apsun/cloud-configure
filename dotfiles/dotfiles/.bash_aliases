@@ -13,10 +13,10 @@ alias s='ls'
 alias fd='cd ..'
 
 # apt (debian)
-# alias up='sudo apt-get update && sudo apt-get dist-upgrade && sudo apt-get autoremove --purge && sudo apt-get clean'
+alias up='sudo apt-get update && sudo apt-get dist-upgrade && sudo apt-get autoremove --purge && sudo apt-get clean'
 
 # pacman (arch)
-alias up='sudo pacman -Syu && yay -Syua && sudo pacman -Rsn $(pacman -Qdttq) && sudo paccache -r && sudo paccache -urk0'
+# alias up='sudo pacman -Syu && yay -Syua && sudo pacman -Rsn $(pacman -Qdttq) && sudo paccache -r && sudo paccache -urk0'
 
 # pkg (freebsd)
 # alias up='sudo pkg upgrade && sudo pkg autoremove && sudo pkg clean'
