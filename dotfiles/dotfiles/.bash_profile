@@ -2,9 +2,8 @@
 export EDITOR=vim
 export VISUAL=vim
 
-# Enable mouse scroll and word wrap on journalctl
-export SYSTEMD_LESS=FRMK
-export LESS=-FRMK
+# Enable colored ls output on BSD
+# export CLICOLOR=1
 
 # Make in parallel
 export MAKEFLAGS="-j$(nproc)"
