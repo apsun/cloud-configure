@@ -1,0 +1,9 @@
+[core]
+	autocrlf = input
+	eol = lf
+
+[init]
+	defaultBranch = master
+
+[pull]
+	rebase = true
