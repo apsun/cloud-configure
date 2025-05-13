@@ -8,10 +8,6 @@ set softtabstop=4
 set autoindent
 set backspace=indent,eol,start
 
-" Dot for space, arrow for tab
-set list
-set listchars=tab:>\ ,space:.
-
 " Hybrid line numbers
 set number
 " set relativenumber
@@ -49,16 +45,7 @@ autocmd FileType make set noexpandtab shiftwidth=4 tabstop=4
 autocmd FileType go set noexpandtab shiftwidth=4 tabstop=4
 
 " Color scheme
-if has("termguicolors")
-    set termguicolors
-    if &term =~# '^screen'
-        let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-        let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-    endif
-endif
 syntax enable
-set background=dark
-colorscheme gruvbox
 
 " Status line
 set laststatus=2
