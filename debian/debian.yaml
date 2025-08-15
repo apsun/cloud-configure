@@ -1,21 +1,21 @@
-- name: 'upgrade to debian 12'
+- name: 'upgrade debian release'
   hosts: all
   become: true
   gather_facts: true
   tasks:
     - name: 'update apt sources'
-      when: ansible_distribution_release != 'bookworm'
+      when: ansible_distribution_release != 'trixie'
       ansible.builtin.replace:
         path: '/etc/apt/sources.list'
         regexp: '{{ ansible_distribution_release }}'
-        replace: 'bookworm'
+        replace: 'trixie'
 
     - name: 'perform full upgrade'
-      when: ansible_distribution_release != 'bookworm'
+      when: ansible_distribution_release != 'trixie'
       ansible.builtin.apt:
         update_cache: true
         upgrade: full
 
     - name: 'reboot the host'
-      when: ansible_distribution_release != 'bookworm'
+      when: ansible_distribution_release != 'trixie'
       ansible.builtin.reboot:

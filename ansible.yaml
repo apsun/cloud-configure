@@ -1,5 +1,5 @@
 - import_playbook: 'init/init.yaml'
-- import_playbook: 'debian12/debian12.yaml'
+- import_playbook: 'debian/debian.yaml'
 - import_playbook: 'hostname/hostname.yaml'
 - import_playbook: 'packages/packages.yaml'
 - import_playbook: 'ssh/ssh.yaml'
