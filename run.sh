@@ -8,7 +8,7 @@ VAR_TEMP_STATIC_IP_NAME=minori-ip
 VAR_SSH_KEY_NAME=andrew-sachiko
 VAR_LIGHTSAIL=true
 VAR_UNIXNAME=admin
-VAR_ENABLE_SSL=1
+VAR_ENABLE_SSL=true
 
 apply() {
     terraform apply \
@@ -68,9 +68,11 @@ _ansible() {
     ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_GATHERING=explicit ansible-playbook "${1:-ansible.yaml}" \
         -i "$(_ip)," \
         -u "${VAR_UNIXNAME}" \
-        -e "hostname=${VAR_HOSTNAME}" \
-        -e "domain_name=${VAR_DOMAIN_NAME}" \
-        -e "enable_ssl=${VAR_ENABLE_SSL}" \
+        -e "$(jq -n '$ARGS.named' \
+            --arg hostname "${VAR_HOSTNAME}" \
+            --arg domain_name "${VAR_DOMAIN_NAME}" \
+            --argjson enable_ssl "${VAR_ENABLE_SSL}"
+        )"
         "${@:2}"
 }
 
