@@ -69,6 +69,7 @@ _ansible() {
         -i "$(_ip)," \
         -u "${VAR_UNIXNAME}" \
         -e "$(jq -n '$ARGS.named' \
+            --arg ansible_python_interpreter auto_silent \
             --arg hostname "${VAR_HOSTNAME}" \
             --arg domain_name "${VAR_DOMAIN_NAME}" \
             --argjson enable_ssl "${VAR_ENABLE_SSL}"
