@@ -30,11 +30,10 @@
     - name: 'enable modules'
       loop: '{{ modules }}'
       register: mod_result
-      failed_when: mod_result.rc != 0 and mod_result.rc != 42
-      changed_when: mod_result.rc == 0
+      changed_when: '"Module " + item + " already enabled" not in mod_result.stdout'
       notify: 'restart apache service'
       ansible.builtin.shell:
-        cmd: 'a2query -q -m {{ item }} && exit 42 || a2enmod {{ item }}'
+        cmd: 'a2enmod {{ item }}'
 
     - name: 'create index.html'
       ansible.builtin.template:
@@ -62,21 +61,19 @@
 
     - name: 'disable old site configs'
       loop: '{{ sites_disabled }}'
-      register: disable_result
-      failed_when: disable_result.rc != 0 and disable_result.rc != 42
-      changed_when: disable_result.rc == 0
+      register: disable_site_result
+      changed_when: '"Site " + item + " already disabled" not in disable_site_result.stdout'
       notify: 'restart apache service'
       ansible.builtin.shell:
-        cmd: 'a2query -q -s {{ item }} || exit 42 && a2dissite {{ item }}'
+        cmd: 'a2dissite {{ item }}'
 
     - name: 'enable site configs'
       loop: '{{ sites }}'
       register: site_result
-      failed_when: site_result.rc != 0 and site_result.rc != 42
-      changed_when: site_result.rc == 0
+      changed_when: '"Site " + item + " already enabled" not in site_result.stdout'
       notify: 'restart apache service'
       ansible.builtin.shell:
-        cmd: 'a2query -q -s {{ item }} && exit 42 || a2ensite {{ item }}'
+        cmd: 'a2ensite {{ item }}'
 
     - name: 'enable apache service'
       ansible.builtin.systemd:
