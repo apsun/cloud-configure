@@ -9,6 +9,7 @@
       - andrew@nonoka-lin
       - shellfish@koharu
       - shellfish@komachi
+      - shellfish@kokomi
 
   tasks:
     - name: 'configure authorized keys'

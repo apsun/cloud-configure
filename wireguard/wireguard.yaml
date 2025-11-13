@@ -18,6 +18,7 @@
       - 'pikvm'
       - 'octopi'
       - 'bastet'
+      - 'kokomi'
 
   tasks:
     - name: 'install packages'
