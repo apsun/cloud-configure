@@ -9,7 +9,7 @@
         types: 'deb'
         uris: 'https://download.docker.com/linux/debian'
         signed_by: 'https://download.docker.com/linux/debian/gpg'
-        suites: '{{ ansible_distribution_release }}'
+        suites: '{{ ansible_facts["distribution_release"] }}'
         components: 'stable'
 
     - name: 'install docker'
