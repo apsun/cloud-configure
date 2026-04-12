@@ -31,21 +31,25 @@
       ansible.posix.sysctl:
         name: 'net.ipv4.ip_forward'
         value: '1'
+        sysctl_file: '/etc/sysctl.d/wireguard.conf'
 
     - name: 'enable IPv6 forwarding'
       ansible.posix.sysctl:
         name: 'net.ipv6.conf.all.forwarding'
         value: '1'
+        sysctl_file: '/etc/sysctl.d/wireguard.conf'
 
     - name: 'use bbr congestion control'
       ansible.posix.sysctl:
         name: 'net.ipv4.tcp_congestion_control'
         value: 'bbr'
+        sysctl_file: '/etc/sysctl.d/wireguard.conf'
 
     - name: 'use fq qdisc'
       ansible.posix.sysctl:
         name: 'net.core.default_qdisc'
         value: 'fq'
+        sysctl_file: '/etc/sysctl.d/wireguard.conf'
 
     - name: 'create wg0 config'
       notify: 'restart wireguard service'
